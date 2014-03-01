@@ -81,12 +81,23 @@ public class SingleMode extends Activity{
 					tmpScore+=10;
 					userScore.setText(String.valueOf(tmpScore));
 					flag = false;
-				}else{
+				}else if(j!=0 && flag==false){
+					//something goind wrong in this part!!
 					wrongDone++;
-					if(wrongDone == totalLife)
-					{
+					if(wrongDone==1){
+						findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
+						userScore.setText(String.valueOf(tmpScore));
+					}else if(wrongDone==2){
+						findViewById(R.id.life_two_single_mode).setVisibility(View.GONE);
+						userScore.setText(String.valueOf(tmpScore));
+					}else if(wrongDone==3){
+						findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
 						Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
+						userScore.setText(String.valueOf(tmpScore));
+						handler.removeCallbacks(this);
 					}
+					//what could have happened ?
+				}else if(flag==false && j==0){
 					userScore.setText(String.valueOf(tmpScore));
 				}
 				imageQuestions.setImageResource(imageArray[i].getImageID());
