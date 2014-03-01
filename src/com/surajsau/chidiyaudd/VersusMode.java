@@ -2,8 +2,6 @@ package com.surajsau.chidiyaudd;
 
 import java.util.Random;
 
-import com.surajsau.chidiyaudd.objects.QuestionImage;
-
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,13 +9,15 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.surajsau.chidiyaudd.objects.QuestionImage;
+
 public class VersusMode extends Activity{
 	
-	Button user1responseButton, user2responseButton;
+	ImageButton user1responseButton, user2responseButton;
 	TextView user1Score, user2Score;
 	int tmpScore1=0, tmpScore2=0;
 	ImageView imageQuestions;
@@ -44,14 +44,14 @@ public class VersusMode extends Activity{
 		setContentView(R.layout.versus_mode);
 		
 		imageQuestions = (ImageView)findViewById(R.id.image_question_versus_mode);
-		user1responseButton = (Button)findViewById(R.id.user1_touch_button_versus_mode);
-		user2responseButton = (Button)findViewById(R.id.user2_touch_button_versus_mode);
+		user1responseButton = (ImageButton)findViewById(R.id.user1_touch_button_versus_mode);
+		user2responseButton = (ImageButton)findViewById(R.id.user2_touch_button_versus_mode);
 
 		user1Score = (TextView)findViewById(R.id.user1_score_versus_mode);
 		user2Score = (TextView)findViewById(R.id.user2_score_versus_mode);
 		
 		//Adding Buka Birds font to score...
-		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/Buka Bird.ttf");
+		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		user1Score.setTypeface(scoreFont);
 		user1Score.setTypeface(scoreFont);
 		
@@ -76,7 +76,7 @@ public class VersusMode extends Activity{
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore1+=10;
-					user2Score.setText(String.valueOf(tmpScore1));
+					user1Score.setText(String.valueOf(tmpScore1));
 					flagUser1 = false;
 				}else{
 					user1Score.setText(String.valueOf(tmpScore1));
@@ -90,10 +90,10 @@ public class VersusMode extends Activity{
 				//Editing the values after each result for user2
 				if(flagUser2 == true){
 					tmpScore2+=10;
-					user1Score.setText(String.valueOf(tmpScore2));
+					user2Score.setText(String.valueOf(tmpScore2));
 					flagUser2 = false;
 				}else{
-					user1Score.setText(String.valueOf(tmpScore2));
+					user2Score.setText(String.valueOf(tmpScore2));
 				}
 				
 				imageQuestions.setImageResource(imageArray[i].getImageID());
