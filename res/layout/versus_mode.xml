@@ -14,7 +14,7 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1">
         <ImageButton 
-		        android:id="@+id/userone_touch_button_versus_mode"
+		        android:id="@+id/user1_touch_button_versus_mode"
 		        android:src="@drawable/player_one_button"
 		        android:layout_height="wrap_content"
 		        android:layout_width="wrap_content"
@@ -27,7 +27,41 @@
         android:layout_weight="3"
         android:id="@+id/image_and_score_panel"
         android:orientation="vertical">
-        
+        <RelativeLayout 
+            android:id="@+id/score_panel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            <TextView 
+                android:id="@+id/user1_score_versus_mode"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textSize="30sp"
+                android:textColor="#000"
+                android:layout_alignParentLeft="true"/>
+            <TextView 
+                android:id="@+id/user2_score_versus_mode"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textColor="#000"
+                android:textSize="30sp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <ImageView
+			    android:id="@+id/image_question_versus_mode"
+			    android:layout_width="225dp"
+			    android:layout_height="175dp"
+			    android:layout_weight="3.75"
+			    android:src="@drawable/get_ready"
+			    android:layout_gravity="center_horizontal"/>
+        <RelativeLayout
+	            android:id="@+id/dummyLayout_3"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="3.5">    
+	    </RelativeLayout>
     </LinearLayout>
     
 	<RelativeLayout 
@@ -36,7 +70,7 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1">
 	    <ImageButton 
-		        android:id="@+id/usertwo_touch_button_single_mode"
+		        android:id="@+id/user2_touch_button_versus_mode"
 		        android:src="@drawable/player_two_button"
 		        android:layout_height="wrap_content"
 		        android:layout_width="wrap_content"
