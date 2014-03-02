@@ -39,6 +39,7 @@
                 android:text="0"
                 android:textSize="30sp"
                 android:textColor="#000"
+                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"/>
             <TextView 
                 android:id="@+id/user2_score_versus_mode"
@@ -47,6 +48,7 @@
                 android:text="0"
                 android:textColor="#000"
                 android:textSize="30sp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <ImageView

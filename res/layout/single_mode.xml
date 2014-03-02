@@ -18,7 +18,8 @@
 	        android:id="@+id/lives_panel"
 	        android:layout_height="match_parent"
 	        android:layout_width="0dp"
-	        android:layout_weight="10">
+	        android:layout_weight="10"
+	        android:layout_marginLeft="15dp">
 		    <ImageView 
 		        android:id="@+id/life_three_single_mode"
 		        android:layout_height="wrap_content"
@@ -44,15 +45,29 @@
 		        android:layout_marginRight="5dp"
 		        android:src="@drawable/heart" />
 		</LinearLayout>
+		<LinearLayout 
+		    android:id="@+id/score_panel"
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="5"		    
+	        android:background="#48b2e8">
 	    <TextView
 	        android:id="@+id/score_single_mode"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="10"
-	        android:layout_gravity="center_vertical"
 	        android:text="0"
-	        android:textColor="#0f71a4"
-	        android:textSize="30sp" />
+	        android:textAlignment="center"
+	        android:textColor="#000"
+	        android:textSize="35sp"
+	        android:gravity="center" />
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:id = "@+id/dummy_layout_6"
+	       	android:layout_width="0dp"
+	       	android:layout_height="match_parent"
+	       	android:layout_weight="10"
+	       	android:orientation="horizontal">	        
+	    </LinearLayout>
 
 	</LinearLayout>
 	<LinearLayout 

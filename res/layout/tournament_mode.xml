@@ -6,133 +6,110 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#fffce5"
+    android:background="@drawable/background_versus_mode"
     android:orientation="horizontal">
+    <RelativeLayout 
+        android:id="@+id/user_one_button_panel"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1">
+        <ImageButton 
+		        android:id="@+id/user1_touch_button_tournament_mode"
+		        android:src="@drawable/player_one_button"
+		        android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_alignParentTop="true"/>
+	    <ImageButton 
+		        android:id="@+id/user2_touch_button_tournament_mode"
+		        android:src="@drawable/player_two_button"
+		        android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
     
     <LinearLayout 
-        android:id = "@+id/user1_touch_panel_tournament_mode"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
-        android:layout_weight="2.5">
-		<Button 
-		    android:id = "@+id/user1_touch_button_tournament_mode"
-		    android:layout_width="fill_parent"
-		    android:layout_height="0dp"
-		    android:layout_weight="1"
-		    android:text="Press Here User 1"
-		    />
-		<Button 
-		    android:id = "@+id/user3_touch_button_tournament_mode"
-		    android:layout_width="fill_parent"
-		    android:layout_height="0dp"
-		    android:layout_weight="1"
-		    android:text="Press Here User 3"
-		    />
-            <!-- android:id = "@+id/press_icon"
-            android:layout_width ="wrap_content"
-            android:layout_height = "wrap_content"
-            android:layout_gravity="fill"
-            android:src="@drawable/pressicon01"/>    -->
-    </LinearLayout>
-
-    <LinearLayout 
-        android:id = "@+id/image_and_score_panel_single_mode"
-        android:orientation="vertical"
         android:layout_height="match_parent"
-        android:layout_width="0dp"
-        android:layout_weight="7">
-		
+        android:layout_weight="3"
+        android:id="@+id/image_and_score_panel"
+        android:orientation="vertical">
         <RelativeLayout 
-    	    android:id="@+id/user_scores_tournament_mode"
-    	    android:layout_height="0dp"
-    	    android:layout_width="fill_parent"
-    	    android:layout_weight="1"
-    	    android:orientation="horizontal">
-			
-			<TextView
-			    android:id="@+id/user1_score_tournament_mode"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentTop="true"
-			    android:text="0"
-			    android:textSize="40sp"
-			    android:layout_gravity="center" />
-
-			<TextView
-			    android:id="@+id/user2_score_tournament_mode"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentRight="true"
-			    android:layout_alignParentTop="true"
-			    android:text="0"
-			    android:textSize="40sp" />
-
-		</RelativeLayout>
-
-        <ImageView
-            android:id="@+id/image_question_tournament_mode"
-            android:layout_width="300dp"
+            android:id="@+id/score_panel"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            android:src="@drawable/image01"
-            android:layout_gravity="center"/>
-        
-    	<RelativeLayout 
-    	    android:id="@+id/user_scores_tournament_mode"
-    	    android:layout_height="0dp"
-    	    android:layout_width="fill_parent"
-    	    android:layout_weight="1"
-    	    android:orientation="horizontal">
-			
-			<TextView
-			    android:id="@+id/user3_score_tournament_mode"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentTop="true"
-			    android:text="0"
-			    android:textSize="40sp"
-			    android:layout_gravity="center" />
-
-			<TextView
-			    android:id="@+id/user4_score_tournament_mode"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentRight="true"
-			    android:layout_alignParentTop="true"
-			    android:text="0"
-			    android:textSize="40sp" />
-
-		</RelativeLayout>
+            android:layout_weight="3">
+            <TextView 
+                android:id="@+id/user1_score_tournament_mode"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textSize="30sp"
+                android:textColor="#000"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+            <TextView 
+                android:id="@+id/user4_score_tournament_mode"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textColor="#000"
+                android:textSize="30sp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <ImageView
+			    android:id="@+id/image_question_tournament_mode"
+			    android:layout_width="225dp"
+			    android:layout_height="175dp"
+			    android:layout_weight="3.75"
+			    android:src="@drawable/get_ready"
+			    android:layout_gravity="center_horizontal"/>
+        <RelativeLayout
+	            android:id="@+id/dummyLayout_3"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="3">
+                <TextView 
+	                android:id="@+id/user2_score_tournament_mode"
+	                android:layout_height="wrap_content"
+	                android:layout_width="wrap_content"
+	                android:text="0"
+	                android:textSize="30sp"
+	                android:textColor="#000"
+	                android:layout_centerVertical="true"
+	                android:layout_alignParentLeft="true"/>
+            	<TextView 
+	                android:id="@+id/user3_score_tournament_mode"
+	                android:layout_height="wrap_content"
+	                android:layout_width="wrap_content"
+	                android:text="0"
+	                android:textColor="#000"
+	                android:textSize="30sp"
+	                android:layout_centerVertical="true"
+	                android:layout_alignParentRight="true"/>
+	    </RelativeLayout>
     </LinearLayout>
     
-    <LinearLayout 
-        android:id = "@+id/user2_4_touch_panel_tournament_mode"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:layout_width="0dp"
-        android:layout_weight="2.5">
-		<Button 
-		    android:id = "@+id/user2_touch_button_tournament_mode"
-		    android:layout_width="fill_parent"
-		    android:layout_height="0dp"
-		    android:text="Press Here User 2"
-		    android:layout_weight="1"
-		    />
-		<Button 
-		    android:id = "@+id/user4_touch_button_tournament_mode"
-		    android:layout_width="fill_parent"
-		    android:layout_height="0dp"
-		    android:layout_weight="1"
-		    android:text="Press Here User 4"
-		    />
-            <!-- android:id = "@+id/press_icon"
-            android:layout_width ="wrap_content"
-            android:layout_height = "wrap_content"
-            android:layout_gravity="fill"
-            android:src="@drawable/pressicon01"/>    -->
-    </LinearLayout>
-
+	<RelativeLayout 
+	    android:id="@+id/user_two_button_panel"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1">
+	    <ImageButton 
+		        android:id="@+id/user4_touch_button_tournament_mode"
+		        android:src="@drawable/player_four_button"
+		        android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_alignParentTop="true"/>
+	    <ImageButton 
+		        android:id="@+id/user3_touch_button_tournament_mode"
+		        android:src="@drawable/player_three_button"
+		        android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_alignParentBottom="true"/>
+	</RelativeLayout>
 </LinearLayout>

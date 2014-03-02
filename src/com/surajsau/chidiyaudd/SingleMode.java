@@ -3,7 +3,10 @@ package com.surajsau.chidiyaudd;
 import java.util.Random;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ public class SingleMode extends Activity{
 	private TextView userScore; //the score that gets displayed
 	int tmpScore = 0; //this is to increment when correct answer is given!
 	Typeface scoreFont;
+	LinearLayout scoreLayout;
 	
 	
 	//Question Images List...
@@ -51,8 +56,9 @@ public class SingleMode extends Activity{
 		imageQuestions = (ImageView)findViewById(R.id.image_question_single_mode);
 		userResponseButton = (ImageButton)findViewById(R.id.touch_button_single_mode);
 		userScore = (TextView)findViewById(R.id.score_single_mode);
+		scoreLayout = (LinearLayout)findViewById(R.id.score_panel);
 		
-		//Adding Buka Birds font to score...
+		//Adding Riogrande font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		userScore.setTypeface(scoreFont);
 		
@@ -132,6 +138,7 @@ public class SingleMode extends Activity{
 					if(flag == true){
 						tmpScore+=10;
 						userScore.setText(String.valueOf(tmpScore));
+						//correctAnswerColorChange(scoreLayout);
 						flagTouch=false;
 						imageQuestions.postDelayed(this, 1200);
 					}else if(numberOfLives > 0 && flag==false){
@@ -141,12 +148,15 @@ public class SingleMode extends Activity{
 						switch (numberOfLives) {
 						case 2:
 							findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
+							//wrongAnswerColorChange(scoreLayout);
 							break;
 						case 1:
 							findViewById(R.id.life_two_single_mode).setVisibility(View.GONE);
+							//wrongAnswerColorChange(scoreLayout);
 							break;
 						case 0:
 							findViewById(R.id.life_one_single_mode).setVisibility(View.GONE);
+							//wrongAnswerColorChange(scoreLayout);
 							break;
 						}
 						userScore.setText(String.valueOf(tmpScore));
@@ -171,8 +181,8 @@ public class SingleMode extends Activity{
 				           }
 				    }, 500);*/
 				        
-				    flagTouch  =false;
-					imageQuestions.postDelayed(this, 1200);
+				    flagTouch = false;
+					imageQuestions.postDelayed(this, 800);
 				}
 				//Sequential generator of images...
 				//i++;
@@ -185,6 +195,22 @@ public class SingleMode extends Activity{
 		//this is how one initialises a handler. 1000ms is the inital delay considered so that the user 
 		//can put his finger before the game begins. 
 		//handler.postDelayed(runnable, 1000);
-		imageQuestions.postDelayed(runnable, 1000);
+		imageQuestions.postDelayed(runnable, 1600);
 	}
+	/* Causing wierd bug...will solve later...
+	public void correctAnswerColorChange(LinearLayout layout){
+		ColorDrawable[] color = {new ColorDrawable(Color.rgb(72,178,232)), new ColorDrawable(Color.rgb(55, 218, 5))};
+		TransitionDrawable colorTransition = new TransitionDrawable(color);
+		layout.setBackground(colorTransition);
+		colorTransition.startTransition(50);
+		colorTransition.reverseTransition(50);
+	}
+	
+	public void wrongAnswerColorChange(LinearLayout layout){
+		ColorDrawable[] color = {new ColorDrawable(Color.rgb(72,178,232)), new ColorDrawable(Color.rgb(232,56,9))};
+		TransitionDrawable colorTransition = new TransitionDrawable(color);
+		layout.setBackground(colorTransition);
+		colorTransition.startTransition(50);
+		colorTransition.reverseTransition(50);
+	}*/
 }
