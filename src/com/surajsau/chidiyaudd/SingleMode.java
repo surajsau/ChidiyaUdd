@@ -132,6 +132,7 @@ public class SingleMode extends Activity{
 					if(flag == true){
 						tmpScore+=10;
 						userScore.setText(String.valueOf(tmpScore));
+						flagTouch=false;
 						imageQuestions.postDelayed(this, 1200);
 					}else if(numberOfLives > 0 && flag==false){
 						numberOfLives--;
@@ -149,6 +150,7 @@ public class SingleMode extends Activity{
 							break;
 						}
 						userScore.setText(String.valueOf(tmpScore));
+						flagTouch = false;
 						imageQuestions.postDelayed(this, 1200);
 					}else if(numberOfLives==0 && flag==false){
 						imageQuestions.setImageResource(R.drawable.game_over);
@@ -156,6 +158,7 @@ public class SingleMode extends Activity{
 				}else{
 					userScore.setText(String.valueOf(tmpScore));
 					
+					/*----Used for testing No Touch event--------------
 					//To reduce the duration of Toast below Toast.LENGTH_SHORT
 					final Toast toast = Toast.makeText(getApplicationContext(), "No touch", Toast.LENGTH_SHORT);
 				    toast.show();
@@ -166,8 +169,9 @@ public class SingleMode extends Activity{
 				           public void run() {
 				               toast.cancel(); 
 				           }
-				    }, 500);
+				    }, 500);*/
 				        
+				    flagTouch  =false;
 					imageQuestions.postDelayed(this, 1200);
 				}
 				//Sequential generator of images...
