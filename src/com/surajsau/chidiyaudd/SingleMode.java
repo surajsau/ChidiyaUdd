@@ -68,7 +68,7 @@ public class SingleMode extends Activity{
 		//final Handler handler = new Handler();
 		
 		Runnable runnable = new Runnable() {
-			int i;
+			int i = 0;
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
 			//This boolean hence is true for Chidiya Udd and false for Chidiya not Udd.
 			boolean flag;
@@ -76,11 +76,7 @@ public class SingleMode extends Activity{
 			int numberOfLives = 3; //as adding check for number of lives just after the run() begins.
 			
 			@Override
-			public void run() {
-				//Random generator of images...
-				Random r = new Random();
-				i = r.nextInt(11);
-				
+			public void run() {				
 				//took j as new variable, because if i was taken then it was taking i of the next state instead of the current state
 				//Cracked it!
 				final int j=i;
@@ -141,9 +137,10 @@ public class SingleMode extends Activity{
 						//correctAnswerColorChange(scoreLayout);
 						flagTouch=false;
 						imageQuestions.postDelayed(this, 1200);
+						i = randomIndex(i, j);
 					}else if(numberOfLives > 0 && flag==false){
 						numberOfLives--;
-						
+						tmpScore-=10;
 					    //showing the number of hearts
 						switch (numberOfLives) {
 						case 2:
@@ -162,6 +159,7 @@ public class SingleMode extends Activity{
 						userScore.setText(String.valueOf(tmpScore));
 						flagTouch = false;
 						imageQuestions.postDelayed(this, 1200);
+						i = randomIndex(i, j);
 					}else if(numberOfLives==0 && flag==false){
 						imageQuestions.setImageResource(R.drawable.game_over);
 					}
@@ -183,6 +181,7 @@ public class SingleMode extends Activity{
 				        
 				    flagTouch = false;
 					imageQuestions.postDelayed(this, 800);
+					i = randomIndex(i, j);
 				}
 				//Sequential generator of images...
 				//i++;
@@ -196,6 +195,15 @@ public class SingleMode extends Activity{
 		//can put his finger before the game begins. 
 		//handler.postDelayed(runnable, 1000);
 		imageQuestions.postDelayed(runnable, 1600);
+	}
+	
+	public int randomIndex(int i, int j){
+		//Random generator of images...
+		Random r = new Random();
+		i = r.nextInt(11);
+		if(i==j)
+			i++;
+		return i;
 	}
 	/* Causing wierd bug...will solve later...
 	public void correctAnswerColorChange(LinearLayout layout){

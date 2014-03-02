@@ -70,7 +70,7 @@ public class TournamentMode extends Activity{
 		
 		Runnable runnable = new Runnable() {
 			int i=0;
-			boolean flagUser1=false, flagUser2=false, flagUser3=false, flagUser4=false;
+			boolean flagUser1, flagUser2, flagUser3, flagUser4;
 			
 			@Override
 			public void run() {
