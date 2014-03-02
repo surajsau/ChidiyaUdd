@@ -12,40 +12,47 @@
 	    android:id="@+id/lives_and_score_panel"
 	    android:layout_width="fill_parent"
 	    android:layout_height="0dp"
-	    android:layout_weight="1">
-	    <ImageView 
-	        android:id="@+id/life_three_single_mode"
-	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
-	        android:layout_gravity="center_vertical"
-	        android:layout_marginLeft="5dp"
-	        android:layout_marginRight="5dp"
-	        android:src="@drawable/heart"/>
-
-	    <ImageView
-	        android:id="@+id/life_two_single_mode"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical"
-	        android:layout_marginRight="5dp"
-	        android:src="@drawable/heart" />
-
-	    <ImageView
-	        android:id="@+id/life_one_single_mode"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical"
-	        android:layout_marginRight="5dp"
-	        android:src="@drawable/heart" />
-
+	    android:layout_weight="1"
+	    android:orientation="horizontal">
+	    <LinearLayout 
+	        android:id="@+id/lives_panel"
+	        android:layout_height="match_parent"
+	        android:layout_width="0dp"
+	        android:layout_weight="10">
+		    <ImageView 
+		        android:id="@+id/life_three_single_mode"
+		        android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginLeft="5dp"
+		        android:layout_marginRight="5dp"
+		        android:src="@drawable/heart"/>
+	
+		    <ImageView
+		        android:id="@+id/life_two_single_mode"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginRight="5dp"
+		        android:src="@drawable/heart" />
+	
+		    <ImageView
+		        android:id="@+id/life_one_single_mode"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginRight="5dp"
+		        android:src="@drawable/heart" />
+		</LinearLayout>
 	    <TextView
 	        android:id="@+id/score_single_mode"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="10"
 	        android:layout_gravity="center_vertical"
 	        android:text="0"
 	        android:textColor="#0f71a4"
-	        android:textSize="20sp" />
+	        android:textSize="30sp" />
 
 	</LinearLayout>
 	<LinearLayout 

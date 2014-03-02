@@ -18,7 +18,7 @@ import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class SingleMode extends Activity{
 	
-	final int numberOfLives =3;
+	//final int numberOfLives =3;
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	ImageButton userResponseButton; //the touch panel where the Chidiya actually Udds!
 	private TextView userScore; //the score that gets displayed
@@ -59,29 +59,28 @@ public class SingleMode extends Activity{
 		userResponseButton.setBackground(null);
 				
 		//Image Changing part  & decision part for imageQuestions ImageView//
-		final Handler handler = new Handler();
+		//final Handler handler = new Handler();
 		
 		Runnable runnable = new Runnable() {
-			int i = 0;
+			int i;
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
 			//This boolean hence is true for Chidiya Udd and false for Chidiya not Udd.
-			boolean flag = false;
-			int n = numberOfLives;
-			//int numberOfLives = 3; //as adding check for number of lives just after the run() begins.
+			boolean flag;
+			boolean flagTouch = false;
+			int numberOfLives = 3; //as adding check for number of lives just after the run() begins.
 			
 			@Override
-			public void run() {				
+			public void run() {
+				//Random generator of images...
+				Random r = new Random();
+				i = r.nextInt(11);
+				
 				//took j as new variable, because if i was taken then it was taking i of the next state instead of the current state
 				//Cracked it!
 				final int j=i;
+				//final int n = numberOfLives;
 				//Editing the values after each result
-				if(flag == true){
-					tmpScore+=10;
-					userScore.setText(String.valueOf(tmpScore));
-					flag = false;
-				}else{
-					userScore.setText(String.valueOf(tmpScore));
-				}
+				
 				imageQuestions.setImageResource(imageArray[i].getImageID());
 				userResponseButton.setEnabled(true);
 				
@@ -98,13 +97,14 @@ public class SingleMode extends Activity{
 						case MotionEvent.ACTION_UP:
 							if(imageArray[j].getCanFly()==true){
 								flag = true;
-								
+								flagTouch = true;
 								//tmpScore+=10;
 								//userScore.setText(String.valueOf(tmpScore));
 								userResponseButton.setEnabled(false);
 							}
 							else{
 								flag = false;
+								flagTouch = true;
 								userResponseButton.setEnabled(false);
 							}
 							break;
@@ -112,9 +112,11 @@ public class SingleMode extends Activity{
 						case MotionEvent.ACTION_MOVE:
 							if(imageArray[j].getCanFly()==true){
 								flag = false;
+								flagTouch = true;
 							}
 							else
 								flag = true;
+								flagTouch = true;
 						}
 						return false;
 					}
@@ -124,45 +126,61 @@ public class SingleMode extends Activity{
 				userResponseButton.setOnTouchListener(onTouchListener);
 				//adding delay between each handler event i.e., the changing of the images
 				
-				if(flag==true)
-					handler.postDelayed(this,1200);
-				else if(flag==false && n>0){
-					Toast.makeText(getApplicationContext(), String.valueOf(n) + "false", Toast.LENGTH_SHORT).show();
-					n--;
-					handler.postDelayed(this, 1200);
-					switch (n) {
-					case 2:
-						findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
-						break;
-					case 1:
-						findViewById(R.id.life_two_single_mode).setVisibility(View.GONE);
-						break;
-					case 0:
-						findViewById(R.id.life_one_single_mode).setVisibility(View.GONE);
-						break;	
-					}
-					Toast.makeText(getApplicationContext(), String.valueOf(n), Toast.LENGTH_SHORT).show();
-				}
-				else if(flag==false && n==0){
-					Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
-				}
 				
+				//handler.postDelayed(this,1200);
+				if(flagTouch==true){
+					if(flag == true){
+						tmpScore+=10;
+						userScore.setText(String.valueOf(tmpScore));
+						imageQuestions.postDelayed(this, 1200);
+					}else if(numberOfLives > 0 && flag==false){
+						numberOfLives--;
+						
+					    //showing the number of hearts
+						switch (numberOfLives) {
+						case 2:
+							findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
+							break;
+						case 1:
+							findViewById(R.id.life_two_single_mode).setVisibility(View.GONE);
+							break;
+						case 0:
+							findViewById(R.id.life_one_single_mode).setVisibility(View.GONE);
+							break;
+						}
+						userScore.setText(String.valueOf(tmpScore));
+						imageQuestions.postDelayed(this, 1200);
+					}else if(numberOfLives==0 && flag==false){
+						imageQuestions.setImageResource(R.drawable.game_over);
+					}
+				}else{
+					userScore.setText(String.valueOf(tmpScore));
+					
+					//To reduce the duration of Toast below Toast.LENGTH_SHORT
+					final Toast toast = Toast.makeText(getApplicationContext(), "No touch", Toast.LENGTH_SHORT);
+				    toast.show();
+
+				    Handler handler = new Handler();
+				        handler.postDelayed(new Runnable() {
+				           @Override
+				           public void run() {
+				               toast.cancel(); 
+				           }
+				    }, 500);
+				        
+					imageQuestions.postDelayed(this, 1200);
+				}
 				//Sequential generator of images...
 				//i++;
 				//if(i>imageArray.length-1)
 				//	i=0;
-
-				//Random generator of images...
-				Random r = new Random();
-				i = r.nextInt(11);
-				if(j==i)
-					i++;
 				
 			}
 		};
 		
 		//this is how one initialises a handler. 1000ms is the inital delay considered so that the user 
 		//can put his finger before the game begins. 
-		handler.postDelayed(runnable, 1000); 
+		//handler.postDelayed(runnable, 1000);
+		imageQuestions.postDelayed(runnable, 1000);
 	}
 }
