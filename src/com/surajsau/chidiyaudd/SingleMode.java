@@ -18,7 +18,7 @@ import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class SingleMode extends Activity{
 	
-	final int totalLife =3;
+	final int numberOfLives =3;
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	ImageButton userResponseButton; //the touch panel where the Chidiya actually Udds!
 	private TextView userScore; //the score that gets displayed
@@ -40,8 +40,6 @@ public class SingleMode extends Activity{
 	QuestionImage img11= new QuestionImage(R.drawable.image11, true);
 	QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 	QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
-	
-	int wrongDone = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +66,7 @@ public class SingleMode extends Activity{
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
 			//This boolean hence is true for Chidiya Udd and false for Chidiya not Udd.
 			boolean flag = false;
+			int n = numberOfLives;
 			//int numberOfLives = 3; //as adding check for number of lives just after the run() begins.
 			
 			@Override
@@ -75,29 +74,12 @@ public class SingleMode extends Activity{
 				//took j as new variable, because if i was taken then it was taking i of the next state instead of the current state
 				//Cracked it!
 				final int j=i;
-				
 				//Editing the values after each result
 				if(flag == true){
 					tmpScore+=10;
 					userScore.setText(String.valueOf(tmpScore));
 					flag = false;
-				}else if(j!=0 && flag==false){
-					//something goind wrong in this part!!
-					wrongDone++;
-					if(wrongDone==1){
-						findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
-						userScore.setText(String.valueOf(tmpScore));
-					}else if(wrongDone==2){
-						findViewById(R.id.life_two_single_mode).setVisibility(View.GONE);
-						userScore.setText(String.valueOf(tmpScore));
-					}else if(wrongDone==3){
-						findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
-						Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
-						userScore.setText(String.valueOf(tmpScore));
-						handler.removeCallbacks(this);
-					}
-					//what could have happened ?
-				}else if(flag==false && j==0){
+				}else{
 					userScore.setText(String.valueOf(tmpScore));
 				}
 				imageQuestions.setImageResource(imageArray[i].getImageID());
@@ -141,7 +123,29 @@ public class SingleMode extends Activity{
 
 				userResponseButton.setOnTouchListener(onTouchListener);
 				//adding delay between each handler event i.e., the changing of the images
+				
+				if(flag==true)
 					handler.postDelayed(this,1200);
+				else if(flag==false && n>0){
+					Toast.makeText(getApplicationContext(), String.valueOf(n) + "false", Toast.LENGTH_SHORT).show();
+					n--;
+					handler.postDelayed(this, 1200);
+					switch (n) {
+					case 2:
+						findViewById(R.id.life_three_single_mode).setVisibility(View.GONE);
+						break;
+					case 1:
+						findViewById(R.id.life_two_single_mode).setVisibility(View.GONE);
+						break;
+					case 0:
+						findViewById(R.id.life_one_single_mode).setVisibility(View.GONE);
+						break;	
+					}
+					Toast.makeText(getApplicationContext(), String.valueOf(n), Toast.LENGTH_SHORT).show();
+				}
+				else if(flag==false && n==0){
+					Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
+				}
 				
 				//Sequential generator of images...
 				//i++;
