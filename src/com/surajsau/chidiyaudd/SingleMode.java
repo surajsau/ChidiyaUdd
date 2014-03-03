@@ -66,7 +66,7 @@ public class SingleMode extends Activity{
 				
 		//Image Changing part  & decision part for imageQuestions ImageView//
 		//final Handler handler = new Handler();
-		
+		final Handler handler = new Handler();
 		Runnable runnable = new Runnable() {
 			int i = 0;
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
@@ -136,11 +136,11 @@ public class SingleMode extends Activity{
 						userScore.setText(String.valueOf(tmpScore));
 						//correctAnswerColorChange(scoreLayout);
 						flagTouch=false;
-						imageQuestions.postDelayed(this, 1200);
+						handler.postDelayed(this, 1200);
 						i = randomIndex(i, j);
 					}else if(numberOfLives > 0 && flag==false){
 						numberOfLives--;
-						tmpScore-=10;
+						//tmpScore-=10;
 					    //showing the number of hearts
 						switch (numberOfLives) {
 						case 2:
@@ -158,7 +158,7 @@ public class SingleMode extends Activity{
 						}
 						userScore.setText(String.valueOf(tmpScore));
 						flagTouch = false;
-						imageQuestions.postDelayed(this, 1200);
+						handler.postDelayed(this, 1200);
 						i = randomIndex(i, j);
 					}else if(numberOfLives==0 && flag==false){
 						imageQuestions.setImageResource(R.drawable.game_over);
@@ -180,7 +180,7 @@ public class SingleMode extends Activity{
 				    }, 500);*/
 				        
 				    flagTouch = false;
-					imageQuestions.postDelayed(this, 800);
+					handler.postDelayed(this, 1000);
 					i = randomIndex(i, j);
 				}
 				//Sequential generator of images...
@@ -194,7 +194,7 @@ public class SingleMode extends Activity{
 		//this is how one initialises a handler. 1000ms is the inital delay considered so that the user 
 		//can put his finger before the game begins. 
 		//handler.postDelayed(runnable, 1000);
-		imageQuestions.postDelayed(runnable, 1600);
+		handler.postDelayed(runnable, 1600);
 	}
 	
 	public int randomIndex(int i, int j){

@@ -63,14 +63,15 @@ public class TournamentMode extends Activity{
 		user3score.setTypeface(scoreFont);
 		user4score.setTypeface(scoreFont);
 		
-		user1ResponseImageButton.setBackground(null);
-		user2ResponseImageButton.setBackground(null);
-		user3ResponseImageButton.setBackground(null);
-		user4ResponseImageButton.setBackground(null);
+		//user1ResponseImageButton.setBackground(null);
+		//user2ResponseImageButton.setBackground(null);
+		//user3ResponseImageButton.setBackground(null);
+		//user4ResponseImageButton.setBackground(null);
 		
+		final Handler handler = new Handler();
 		Runnable runnable = new Runnable() {
 			int i=0;
-			boolean flagUser1, flagUser2, flagUser3, flagUser4;
+			boolean flagUser1=false, flagUser2=false, flagUser3=false, flagUser4=false;
 			
 			@Override
 			public void run() {
@@ -126,81 +127,83 @@ public class TournamentMode extends Activity{
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						switch(event.getAction()){
-						case MotionEvent.ACTION_POINTER_UP:
+						case MotionEvent.ACTION_UP:
 							if(v.getId()==R.id.user1_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true)
-									flagUser1 = false;
-								else
+								if(imageArray[j].getCanFly()==true){
 									flagUser1 = true;
+									//tmpScore+=10;
+									//userScore.setText(String.valueOf(tmpScore));
+									user1ResponseImageButton.setEnabled(false);
+								}
+								else{
+									flagUser1 = false;
+									user1ResponseImageButton.setEnabled(false);
+								}
 							}
 							if(v.getId()==R.id.user2_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true)
-									flagUser2 = false;
-								else
+								if(imageArray[j].getCanFly()==true){
 									flagUser2 = true;
+									//tmpScore+=10;
+									//userScore.setText(String.valueOf(tmpScore));
+									user2ResponseImageButton.setEnabled(false);
+								}
+								else{
+									flagUser2 = false;
+									user2ResponseImageButton.setEnabled(false);
+								}
 							}
 							if(v.getId()==R.id.user3_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true)
-									flagUser3 = false;
-								else
+								if(imageArray[j].getCanFly()==true){
 									flagUser3 = true;
+									//tmpScore+=10;
+									//userScore.setText(String.valueOf(tmpScore));
+									user3ResponseImageButton.setEnabled(false);
+								}
+								else{
+									flagUser3 = false;
+									user3ResponseImageButton.setEnabled(false);
+								}
 							}
 							if(v.getId()==R.id.user4_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true)
-									flagUser4 = false;
-								else
+								if(imageArray[j].getCanFly()==true){
 									flagUser4 = true;
+									//tmpScore+=10;
+									//userScore.setText(String.valueOf(tmpScore));
+									user4ResponseImageButton.setEnabled(false);
+								}
+								else{
+									flagUser4 = false;
+									user4ResponseImageButton.setEnabled(false);
+								}
 							}
-						
+							break;
+							
 						case MotionEvent.ACTION_MOVE:
 							if(v.getId()==R.id.user1_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true){
-									flagUser1 = true;
-									//tmpScore+=10;
-									//userScore.setText(String.valueOf(tmpScore));
-									user1ResponseImageButton.setEnabled(false);
-								}
-								else{
+								if(imageArray[j].getCanFly()==true)
 									flagUser1 = false;
-									user1ResponseImageButton.setEnabled(false);
-								}
+								else
+									flagUser1 = true;
 							}
 							if(v.getId()==R.id.user2_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true){
-									flagUser2 = true;
-									//tmpScore+=10;
-									//userScore.setText(String.valueOf(tmpScore));
-									user2ResponseImageButton.setEnabled(false);
-								}
-								else{
+								if(imageArray[j].getCanFly()==true)
 									flagUser2 = false;
-									user2ResponseImageButton.setEnabled(false);
-								}
+								else
+									flagUser2 = true;
 							}
 							if(v.getId()==R.id.user3_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true){
-									flagUser3 = true;
-									//tmpScore+=10;
-									//userScore.setText(String.valueOf(tmpScore));
-									user3ResponseImageButton.setEnabled(false);
-								}
-								else{
+								if(imageArray[j].getCanFly()==true)
 									flagUser3 = false;
-									user3ResponseImageButton.setEnabled(false);
-								}
+								else
+									flagUser3 = true;
 							}
 							if(v.getId()==R.id.user4_touch_button_tournament_mode){
-								if(imageArray[j].getCanFly()==true){
-									flagUser4 = true;
-									//tmpScore+=10;
-									//userScore.setText(String.valueOf(tmpScore));
-									user4ResponseImageButton.setEnabled(false);
-								}
-								else{
+								if(imageArray[j].getCanFly()==true)
 									flagUser4 = false;
-									user4ResponseImageButton.setEnabled(false);
-								}
+								else
+									flagUser4 = true;
 							}
+							break;
 						}
 						return false;
 					}
@@ -212,7 +215,7 @@ public class TournamentMode extends Activity{
 				user4ResponseImageButton.setOnTouchListener(onTouchListener);
 				
 				//adding delay between each handler event i.e., the changing of the images
-				imageQuestions.postDelayed(this,1200);
+				handler.postDelayed(this,1000);
 				
 				//Sequential generator of images...
 				//i++;
@@ -224,6 +227,6 @@ public class TournamentMode extends Activity{
 				i = r.nextInt(11);
 			}
 		};
-		imageQuestions.postDelayed(runnable, 1500);
+		handler.postDelayed(runnable, 1500);
 	}
 }
