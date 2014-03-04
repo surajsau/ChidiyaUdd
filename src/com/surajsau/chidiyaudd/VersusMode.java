@@ -53,7 +53,7 @@ public class VersusMode extends Activity{
 		//Adding Buka Birds font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		user1Score.setTypeface(scoreFont);
-		user1Score.setTypeface(scoreFont);
+		user2Score.setTypeface(scoreFont);
 		
 		user1responseButton.setBackground(null);
 		user2responseButton.setBackground(null);

@@ -3,21 +3,16 @@ package com.surajsau.chidiyaudd;
 import java.util.Random;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.surajsau.chidiyaudd.objects.QuestionImage;
 
@@ -118,9 +113,11 @@ public class SingleMode extends Activity{
 								flag = false;
 								flagTouch = true;
 							}
-							else
+							else{
 								flag = true;
 								flagTouch = true;
+							}
+							//break;
 						}
 						return false;
 					}
@@ -192,7 +189,6 @@ public class SingleMode extends Activity{
 				//i++;
 				//if(i>imageArray.length-1)
 				//	i=0;
-				
 			}
 		};
 		
@@ -205,12 +201,14 @@ public class SingleMode extends Activity{
 	public int randomIndex(int i, int j){
 		//Random generator of images...
 		Random r = new Random();
-		i = r.nextInt(11);
-		if(i==j)
-			i++;
+		do{
+			i = r.nextInt(11);
+		}while(i==j);
 		return i;
 	}
 	
+	//This is to pause the activity completely as the game is over. There is no 
+	//onResume() function here.
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
