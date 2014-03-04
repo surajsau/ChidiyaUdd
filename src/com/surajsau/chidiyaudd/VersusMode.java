@@ -5,6 +5,9 @@ import java.util.Random;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -44,9 +47,26 @@ public class VersusMode extends Activity{
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 		
+	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@SuppressLint("NewApi")
-	@Override
+	    public void onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+		AlertDialog alertDialog = new AlertDialog.Builder(VersusMode.this).create();
+		alertDialog.setTitle("Title");
+		alertDialog.setMessage("Your text");
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int which) {
+
+			   //here you can add functions
+
+			} });
+	    }
+	
+	
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressLint("NewApi")
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -83,9 +103,7 @@ public class VersusMode extends Activity{
 				//took j as new variable, because if i was taken then it was taking i of the next state instead of the current state
 				//Cracked it!
 				final int j=i;
-				if (tmpScore1==100 || tmpScore2==100 )
-				{imageQuestions.setImageResource(R.drawable.game_over);
-				onPause();}
+				
 				
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
@@ -182,6 +200,11 @@ public class VersusMode extends Activity{
 				user2responseButton.setOnTouchListener(user2onTouchListener);
 				
 				//adding delay between each handler event i.e., the changing of the images
+				if (tmpScore1==100 || tmpScore2==100 )
+				{imageQuestions.setImageResource(R.drawable.game_over);
+				onPause();}
+				else
+				{
 				handler.postDelayed(this,1200);
 				
 				//Sequential generator of images...
@@ -190,8 +213,8 @@ public class VersusMode extends Activity{
 				//	i=0;
 
 				//Random generator of images...
-				Random r = new Random();
-				i = r.nextInt(11);
+				i = randomIndex(i,j);
+				}
 			}
 		};
 		
@@ -199,10 +222,21 @@ public class VersusMode extends Activity{
 		//can put his finger before the game begins. 
 		handler.postDelayed(runnable, 1000);
 	}
+	public int randomIndex(int i, int j){
+		//Random generator of images...
+		Random r = new Random();
+		do{
+			i = r.nextInt(11);
+		}while(i==j);
+		return i;
+	}
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		if(this.isFinishing()) mp.stop();
+		 mp.stop();
 		handler.removeCallbacks(runnable);
+		
+		
+		
 		super.onPause();
 	}
 }

@@ -4,5 +4,7 @@
     <string name="app_name">Chidiya Udd</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="replay">Replay</string>
+    <string name="mainmenu">Main Menu</string>
 
 </resources>

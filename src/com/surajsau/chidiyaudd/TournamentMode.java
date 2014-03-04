@@ -82,9 +82,7 @@ public class TournamentMode extends Activity{
 			public void run() {
 				final int j = i;
 				
-				if (tmpScore1==500 || tmpScore2==500 || tmpScore3==500 || tmpScore4==500)
-					{imageQuestions.setImageResource(R.drawable.game_over);
-					onPause();}
+				
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore1+=10;
@@ -94,10 +92,7 @@ public class TournamentMode extends Activity{
 					user1score.setText(String.valueOf(tmpScore1));
 				}
 				
-				/*A very awkward glitch or bug I don't know. But all the elements are in the right place.
-				 * the user1 button, user1 score, user2 button & user2 score. But, only when I internchage the scores display do 
-				 * the scoring works properly, else 1's score is shown on 2's side and vice versa :/
-				 */
+				
 				
 				//Editing the values after each result for user2
 				if(flagUser2 == true){
@@ -224,24 +219,36 @@ public class TournamentMode extends Activity{
 				user4ResponseImageButton.setOnTouchListener(onTouchListener);
 				
 				//adding delay between each handler event i.e., the changing of the images
-				handler.postDelayed(this,1000);
 				
+				if (tmpScore1==500 || tmpScore2==500 || tmpScore3==500 || tmpScore4==500)
+				{imageQuestions.setImageResource(R.drawable.game_over);
+				onPause();}
+				else
+				{	handler.postDelayed(this,1000);
 				//Sequential generator of images...
 				//i++;
 				//if(i>imageArray.length-1)
 				//	i=0;
 
 				//Random generator of images...
-				Random r = new Random();
-				i = r.nextInt(11);
+				i=randomIndex(i,j);
+				}
 			}
 		};
 		handler.postDelayed(runnable, 1500);
 	}
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		if(this.isFinishing()) mp.stop();
+		 mp.stop();
 		handler.removeCallbacks(runnable);
 		super.onPause();
+	}
+	public int randomIndex(int i, int j){
+		//Random generator of images...
+		Random r = new Random();
+		do{
+			i = r.nextInt(11);
+		}while(i==j);
+		return i;
 	}
 }
