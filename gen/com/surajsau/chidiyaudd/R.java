@@ -17,8 +17,8 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f040000;
-        public static final int activity_vertical_margin=0x7f040001;
+        public static final int activity_horizontal_margin=0x7f050000;
+        public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
         public static final int background=0x7f020000;
@@ -58,49 +58,49 @@ public final class R {
         public static final int versus_image=0x7f020022;
     }
     public static final class id {
-        public static final int action_settings=0x7f08002a;
-        public static final int button_panel=0x7f080017;
-        public static final int dummyLayout_1=0x7f080005;
-        public static final int dummyLayout_2=0x7f080014;
-        public static final int dummyLayout_3=0x7f080016;
-        public static final int dummy_layout_6=0x7f080011;
-        public static final int image_and_score_panel=0x7f08001c;
-        public static final int image_board=0x7f080001;
-        public static final int image_board_section=0x7f080000;
-        public static final int image_panel=0x7f080013;
-        public static final int image_question_single_mode=0x7f080015;
-        public static final int image_question_tournament_mode=0x7f08001f;
-        public static final int image_question_versus_mode=0x7f080028;
-        public static final int image_questions_and_button_panel=0x7f080012;
-        public static final int image_settings_mode=0x7f080009;
-        public static final int image_single_mode=0x7f080004;
-        public static final int image_tournament_mode=0x7f080008;
-        public static final int image_versus_mode=0x7f080006;
-        public static final int life_one_single_mode=0x7f08000e;
-        public static final int life_three_single_mode=0x7f08000c;
-        public static final int life_two_single_mode=0x7f08000d;
-        public static final int lives_and_score_panel=0x7f08000a;
-        public static final int lives_panel=0x7f08000b;
-        public static final int options_panel=0x7f080002;
-        public static final int panel_lower_half=0x7f080007;
-        public static final int panel_upper_half=0x7f080003;
-        public static final int score_panel=0x7f08000f;
-        public static final int score_single_mode=0x7f080010;
-        public static final int touch_button_single_mode=0x7f080018;
-        public static final int user1_score_tournament_mode=0x7f08001d;
-        public static final int user1_score_versus_mode=0x7f080026;
-        public static final int user1_touch_button_tournament_mode=0x7f08001a;
-        public static final int user1_touch_button_versus_mode=0x7f080025;
-        public static final int user2_score_tournament_mode=0x7f080020;
-        public static final int user2_score_versus_mode=0x7f080027;
-        public static final int user2_touch_button_tournament_mode=0x7f08001b;
-        public static final int user2_touch_button_versus_mode=0x7f080029;
-        public static final int user3_score_tournament_mode=0x7f080021;
-        public static final int user3_touch_button_tournament_mode=0x7f080024;
-        public static final int user4_score_tournament_mode=0x7f08001e;
-        public static final int user4_touch_button_tournament_mode=0x7f080023;
-        public static final int user_one_button_panel=0x7f080019;
-        public static final int user_two_button_panel=0x7f080022;
+        public static final int action_settings=0x7f09002a;
+        public static final int button_panel=0x7f090017;
+        public static final int dummyLayout_1=0x7f090005;
+        public static final int dummyLayout_2=0x7f090014;
+        public static final int dummyLayout_3=0x7f090016;
+        public static final int dummy_layout_6=0x7f090011;
+        public static final int image_and_score_panel=0x7f09001c;
+        public static final int image_board=0x7f090001;
+        public static final int image_board_section=0x7f090000;
+        public static final int image_panel=0x7f090013;
+        public static final int image_question_single_mode=0x7f090015;
+        public static final int image_question_tournament_mode=0x7f09001f;
+        public static final int image_question_versus_mode=0x7f090028;
+        public static final int image_questions_and_button_panel=0x7f090012;
+        public static final int image_settings_mode=0x7f090009;
+        public static final int image_single_mode=0x7f090004;
+        public static final int image_tournament_mode=0x7f090008;
+        public static final int image_versus_mode=0x7f090006;
+        public static final int life_one_single_mode=0x7f09000e;
+        public static final int life_three_single_mode=0x7f09000c;
+        public static final int life_two_single_mode=0x7f09000d;
+        public static final int lives_and_score_panel=0x7f09000a;
+        public static final int lives_panel=0x7f09000b;
+        public static final int options_panel=0x7f090002;
+        public static final int panel_lower_half=0x7f090007;
+        public static final int panel_upper_half=0x7f090003;
+        public static final int score_panel=0x7f09000f;
+        public static final int score_single_mode=0x7f090010;
+        public static final int touch_button_single_mode=0x7f090018;
+        public static final int user1_score_tournament_mode=0x7f09001d;
+        public static final int user1_score_versus_mode=0x7f090026;
+        public static final int user1_touch_button_tournament_mode=0x7f09001a;
+        public static final int user1_touch_button_versus_mode=0x7f090025;
+        public static final int user2_score_tournament_mode=0x7f090020;
+        public static final int user2_score_versus_mode=0x7f090027;
+        public static final int user2_touch_button_tournament_mode=0x7f09001b;
+        public static final int user2_touch_button_versus_mode=0x7f090029;
+        public static final int user3_score_tournament_mode=0x7f090021;
+        public static final int user3_touch_button_tournament_mode=0x7f090024;
+        public static final int user4_score_tournament_mode=0x7f09001e;
+        public static final int user4_touch_button_tournament_mode=0x7f090023;
+        public static final int user_one_button_panel=0x7f090019;
+        public static final int user_two_button_panel=0x7f090022;
     }
     public static final class layout {
         public static final int activity_launch=0x7f030000;
@@ -109,12 +109,15 @@ public final class R {
         public static final int versus_mode=0x7f030003;
     }
     public static final class menu {
-        public static final int launch=0x7f070000;
+        public static final int launch=0x7f080000;
+    }
+    public static final class raw {
+        public static final int ceza=0x7f040000;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
-        public static final int app_name=0x7f050000;
-        public static final int hello_world=0x7f050002;
+        public static final int action_settings=0x7f060001;
+        public static final int app_name=0x7f060000;
+        public static final int hello_world=0x7f060002;
     }
     public static final class style {
         /** 
@@ -138,10 +141,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
     }
 }

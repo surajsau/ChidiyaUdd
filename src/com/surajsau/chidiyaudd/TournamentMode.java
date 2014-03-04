@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -22,7 +23,9 @@ public class TournamentMode extends Activity{
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	int tmpScore1 = 0, tmpScore2 = 0, tmpScore3 = 0, tmpScore4 = 0; //this is to increment when correct answer is given!
 	Typeface scoreFont;
-	
+	Runnable runnable;
+	Handler handler;
+	MediaPlayer mp;
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -43,7 +46,9 @@ public class TournamentMode extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tournament_mode);
-		
+		mp = MediaPlayer.create(TournamentMode.this, R.raw.ceza);
+		mp.setLooping(true);
+		mp.start();
 		user1score = (TextView)findViewById(R.id.user1_score_tournament_mode);
 		user2score = (TextView)findViewById(R.id.user2_score_tournament_mode);
 		user3score = (TextView)findViewById(R.id.user3_score_tournament_mode);
@@ -68,14 +73,18 @@ public class TournamentMode extends Activity{
 		//user3ResponseImageButton.setBackground(null);
 		//user4ResponseImageButton.setBackground(null);
 		
-		final Handler handler = new Handler();
-		Runnable runnable = new Runnable() {
+		handler = new Handler();
+		runnable = new Runnable() {
 			int i=0;
 			boolean flagUser1=false, flagUser2=false, flagUser3=false, flagUser4=false;
 			
 			@Override
 			public void run() {
 				final int j = i;
+				
+				if (tmpScore1==500 || tmpScore2==500 || tmpScore3==500 || tmpScore4==500)
+					{imageQuestions.setImageResource(R.drawable.game_over);
+					onPause();}
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore1+=10;
@@ -228,5 +237,11 @@ public class TournamentMode extends Activity{
 			}
 		};
 		handler.postDelayed(runnable, 1500);
+	}
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		if(this.isFinishing()) mp.stop();
+		handler.removeCallbacks(runnable);
+		super.onPause();
 	}
 }

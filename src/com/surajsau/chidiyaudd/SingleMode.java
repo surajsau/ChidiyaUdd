@@ -2,8 +2,10 @@ package com.surajsau.chidiyaudd;
 
 import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -18,6 +20,7 @@ import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class SingleMode extends Activity{
 	
+	
 	//final int numberOfLives =3;
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	ImageButton userResponseButton; //the touch panel where the Chidiya actually Udds!
@@ -27,6 +30,7 @@ public class SingleMode extends Activity{
 	LinearLayout scoreLayout;
 	Handler handler;
 	Runnable runnable;
+	MediaPlayer mp;
 	
 	//Question Images List...
 	QuestionImage img1= new QuestionImage(R.drawable.image01, false);
@@ -43,13 +47,15 @@ public class SingleMode extends Activity{
 	QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 	QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.single_mode);
-		
+		mp = MediaPlayer.create(SingleMode.this, R.raw.ceza);
+		mp.setLooping(true);
 		//int wrongDone = 0;
-		
+		mp.start();
 		imageQuestions = (ImageView)findViewById(R.id.image_question_single_mode);
 		userResponseButton = (ImageButton)findViewById(R.id.touch_button_single_mode);
 		userScore = (TextView)findViewById(R.id.score_single_mode);
@@ -212,6 +218,7 @@ public class SingleMode extends Activity{
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
+		if(this.isFinishing()) mp.stop();
 		handler.removeCallbacks(runnable);
 		super.onPause();
 	}
