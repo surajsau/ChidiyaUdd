@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +30,8 @@ public class SingleMode extends Activity{
 	int tmpScore = 0; //this is to increment when correct answer is given!
 	Typeface scoreFont;
 	LinearLayout scoreLayout;
-	
+	Handler handler;
+	Runnable runnable;
 	
 	//Question Images List...
 	QuestionImage img1= new QuestionImage(R.drawable.image01, false);
@@ -66,8 +68,8 @@ public class SingleMode extends Activity{
 				
 		//Image Changing part  & decision part for imageQuestions ImageView//
 		//final Handler handler = new Handler();
-		final Handler handler = new Handler();
-		Runnable runnable = new Runnable() {
+		handler = new Handler();
+		runnable = new Runnable() {
 			int i = 0;
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
 			//This boolean hence is true for Chidiya Udd and false for Chidiya not Udd.
@@ -136,8 +138,9 @@ public class SingleMode extends Activity{
 						userScore.setText(String.valueOf(tmpScore));
 						//correctAnswerColorChange(scoreLayout);
 						flagTouch=false;
-						handler.postDelayed(this, 1200);
 						i = randomIndex(i, j);
+						userResponseButton.setEnabled(true);
+						handler.postDelayed(this, 1200);
 					}else if(numberOfLives > 0 && flag==false){
 						numberOfLives--;
 						//tmpScore-=10;
@@ -158,10 +161,12 @@ public class SingleMode extends Activity{
 						}
 						userScore.setText(String.valueOf(tmpScore));
 						flagTouch = false;
-						handler.postDelayed(this, 1200);
 						i = randomIndex(i, j);
+						userResponseButton.setEnabled(true);
+						handler.postDelayed(this, 1200);
 					}else if(numberOfLives==0 && flag==false){
 						imageQuestions.setImageResource(R.drawable.game_over);
+						onPause();
 					}
 				}else{
 					userScore.setText(String.valueOf(tmpScore));
@@ -204,6 +209,13 @@ public class SingleMode extends Activity{
 		if(i==j)
 			i++;
 		return i;
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		handler.removeCallbacks(runnable);
+		super.onPause();
 	}
 	/* Causing wierd bug...will solve later...
 	public void correctAnswerColorChange(LinearLayout layout){
