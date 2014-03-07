@@ -265,6 +265,7 @@ public class TournamentMode extends Activity{
 		};
 		handler.postDelayed(runnable, 1500);
 	}
+	
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		 mp.stop();
@@ -272,6 +273,8 @@ public class TournamentMode extends Activity{
 		onCreateDialog();
 		super.onPause();
 	}
+	
+	//Random index generator
 	public int randomIndex(int i, int j){
 		//Random generator of images...
 		Random r = new Random();

@@ -28,9 +28,11 @@ import android.widget.ToggleButton;
 import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class SettingsMode extends Activity{
-	
-	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.settings_mode);
 	}
-	
 
 }
