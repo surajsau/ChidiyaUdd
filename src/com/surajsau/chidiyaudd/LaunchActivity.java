@@ -1,19 +1,18 @@
 package com.surajsau.chidiyaudd;
 
 
-import android.media.MediaPlayer;
-import android.os.Build;
-import android.os.Bundle;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.view.View.OnClickListener;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.view.Menu;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -23,8 +22,7 @@ public class LaunchActivity extends Activity {
 	ImageButton versusMode;
 	ImageButton tournamentMode;
 	ImageButton settingsMode;
-	
-			
+	boolean sound1;
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +39,23 @@ public class LaunchActivity extends Activity {
 		tournamentMode.setBackground(null);
 		settingsMode.setBackground(null);
 		
+		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+		try{
+		sound1 = pref.getBoolean("sound", false); //0 is the default value
+		}catch(Exception e)		
+		{
+			Editor editor = pref.edit();
+			editor.putBoolean("sound", true);
+			editor.commit();
+		}
+		
 		singleMode.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				 
+				Intent i = new Intent(LaunchActivity.this, SingleMode.class);
+				startActivity(i);
 			}
 		});
 		versusMode.setOnClickListener(new OnClickListener() {

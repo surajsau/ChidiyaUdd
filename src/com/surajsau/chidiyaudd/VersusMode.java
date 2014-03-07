@@ -6,9 +6,10 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -33,6 +34,8 @@ public class VersusMode extends Activity{
 	Typeface scoreFont;
 	Runnable runnable;
 	Handler handler;
+	boolean sound1;
+	
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -87,7 +90,9 @@ public class VersusMode extends Activity{
 		setContentView(R.layout.versus_mode);
 		mp = MediaPlayer.create(VersusMode.this, R.raw.ceza);
 		mp.setLooping(true);
-		mp.start();
+		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+		sound1 = pref.getBoolean("sound", false); //0 is the default value
+		if(sound1) mp.start();
 		imageQuestions = (ImageView)findViewById(R.id.image_question_versus_mode);
 		user1responseButton = (ImageButton)findViewById(R.id.user1_touch_button_versus_mode);
 		user2responseButton = (ImageButton)findViewById(R.id.user2_touch_button_versus_mode);
@@ -246,7 +251,7 @@ public class VersusMode extends Activity{
 	}
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		 mp.stop();
+		if(sound1) mp.stop();
 		handler.removeCallbacks(runnable);
 		onCreateDialog();
 		

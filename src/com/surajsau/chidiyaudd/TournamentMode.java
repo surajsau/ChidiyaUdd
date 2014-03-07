@@ -4,8 +4,10 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ public class TournamentMode extends Activity{
 	Runnable runnable;
 	Handler handler;
 	MediaPlayer mp;
+	boolean sound1;
+	
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -76,7 +80,9 @@ public class TournamentMode extends Activity{
 		setContentView(R.layout.tournament_mode);
 		mp = MediaPlayer.create(TournamentMode.this, R.raw.ceza);
 		mp.setLooping(true);
-		mp.start();
+		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+		sound1 = pref.getBoolean("sound", false); //0 is the default value
+		if(sound1) mp.start();
 		user1score = (TextView)findViewById(R.id.user1_score_tournament_mode);
 		user2score = (TextView)findViewById(R.id.user2_score_tournament_mode);
 		user3score = (TextView)findViewById(R.id.user3_score_tournament_mode);
@@ -267,7 +273,7 @@ public class TournamentMode extends Activity{
 	}
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		 mp.stop();
+		if(sound1)mp.stop();
 		handler.removeCallbacks(runnable);
 		onCreateDialog();
 		super.onPause();
