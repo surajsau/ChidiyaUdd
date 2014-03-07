@@ -4,6 +4,9 @@ import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -47,6 +50,32 @@ public class SingleMode extends Activity{
 	QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 	QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 	
+	@SuppressWarnings("deprecation")
+	public void onCreateDialog() {
+        // Use the Builder class for convenient dialog construction
+	AlertDialog alertDialog = new AlertDialog.Builder(SingleMode.this).create();
+	//alertDialog.setTitle("Title");
+	//alertDialog.setMessage("Your text");
+	alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int which) {
+
+		   //here you can add functions
+			  Intent intent = getIntent();
+			  finish();                
+			  startActivity(intent);
+
+		} });
+	alertDialog.setButton2("Main Menu", new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int which) {
+
+		   //here you can add functions
+			  Intent i = new Intent(SingleMode.this , LaunchActivity.class);
+				finish();
+				startActivity(i);
+
+		} });
+	alertDialog.show();
+    }
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +249,7 @@ public class SingleMode extends Activity{
 		// TODO Auto-generated method stub
 		if(this.isFinishing()) mp.stop();
 		handler.removeCallbacks(runnable);
+		onCreateDialog();
 		super.onPause();
 	}
 	/* Causing wierd bug...will solve later...

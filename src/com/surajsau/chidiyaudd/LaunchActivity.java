@@ -46,9 +46,7 @@ public class LaunchActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(LaunchActivity.this, SingleMode.class);
-				
-				startActivity(i);
+				 
 			}
 		});
 		versusMode.setOnClickListener(new OnClickListener() {

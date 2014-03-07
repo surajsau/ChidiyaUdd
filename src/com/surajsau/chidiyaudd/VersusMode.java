@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -50,17 +51,30 @@ public class VersusMode extends Activity{
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@SuppressLint("NewApi")
-	    public void onCreateDialog(Bundle savedInstanceState) {
+	    public void onCreateDialog() {
 	        // Use the Builder class for convenient dialog construction
 		AlertDialog alertDialog = new AlertDialog.Builder(VersusMode.this).create();
-		alertDialog.setTitle("Title");
-		alertDialog.setMessage("Your text");
-		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		//alertDialog.setTitle("Title");
+		//alertDialog.setMessage("Your text");
+		alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
 			  public void onClick(DialogInterface dialog, int which) {
 
 			   //here you can add functions
+				  Intent intent = getIntent();
+				  finish();                
+				  startActivity(intent);
 
 			} });
+		alertDialog.setButton2("Main Menu", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int which) {
+
+			   //here you can add functions
+				  Intent i = new Intent(VersusMode.this , LaunchActivity.class);
+					finish();
+					startActivity(i);
+
+			} });
+		alertDialog.show();
 	    }
 	
 	
@@ -234,7 +248,7 @@ public class VersusMode extends Activity{
 		// TODO Auto-generated method stub
 		 mp.stop();
 		handler.removeCallbacks(runnable);
-		
+		onCreateDialog();
 		
 		
 		super.onPause();
