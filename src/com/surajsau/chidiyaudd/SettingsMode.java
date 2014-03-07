@@ -7,8 +7,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -28,11 +31,16 @@ import android.widget.ToggleButton;
 import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class SettingsMode extends Activity{
-	@Override
+	
+	boolean sound1;
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings_mode);
-	}
+		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+		Editor editor = pref.edit();
+		editor.putBoolean("sound",false);//put variable name
+		editor.commit();
+		
+		}
+	
 
 }

@@ -68,17 +68,6 @@
             	android:name="android.support.PARENT_ACTIVITY"
             	android:value="com.surajsau.chidiyaudd.LaunchActivity" />
         </activity>
-        
-        <activity
-            android:name="com.surajsau.chidiyaudd.SettingsMode"
-            android:label="@string/app_name" 
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation"
-            android:launchMode="singleTask">
-            <meta-data
-            	android:name="android.support.PARENT_ACTIVITY"
-            	android:value="com.surajsau.chidiyaudd.LaunchActivity" />
-        </activity>
     </application>
 
 </manifest>

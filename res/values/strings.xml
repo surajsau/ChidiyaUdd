@@ -6,6 +6,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="replay">Replay</string>
     <string name="mainmenu">Main Menu</string>
-    <string name="available_status">On</string>
 
 </resources>
