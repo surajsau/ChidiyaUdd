@@ -2,8 +2,16 @@ package com.surajsau.chidiyaudd;
 
 import java.util.Random;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -20,8 +28,11 @@ public class VersusMode extends Activity{
 	ImageButton user1responseButton, user2responseButton;
 	TextView user1Score, user2Score;
 	int tmpScore1=0, tmpScore2=0;
+	MediaPlayer mp;
 	ImageView imageQuestions;
 	Typeface scoreFont;
+	Runnable runnable;
+	Handler handler;
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -37,12 +48,46 @@ public class VersusMode extends Activity{
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 		
-	@Override
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressLint("NewApi")
+	    public void onCreateDialog() {
+	        // Use the Builder class for convenient dialog construction
+		AlertDialog alertDialog = new AlertDialog.Builder(VersusMode.this).create();
+		//alertDialog.setTitle("Title");
+		//alertDialog.setMessage("Your text");
+		alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int which) {
+
+			   //here you can add functions
+				  Intent intent = getIntent();
+				  finish();                
+				  startActivity(intent);
+
+			} });
+		alertDialog.setButton2("Main Menu", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int which) {
+
+			   //here you can add functions
+				  Intent i = new Intent(VersusMode.this , LaunchActivity.class);
+					finish();
+					startActivity(i);
+
+			} });
+		alertDialog.show();
+	    }
+	
+	
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressLint("NewApi")
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.versus_mode);
-		
+		mp = MediaPlayer.create(VersusMode.this, R.raw.ceza);
+		mp.setLooping(true);
+		mp.start();
 		imageQuestions = (ImageView)findViewById(R.id.image_question_versus_mode);
 		user1responseButton = (ImageButton)findViewById(R.id.user1_touch_button_versus_mode);
 		user2responseButton = (ImageButton)findViewById(R.id.user2_touch_button_versus_mode);
@@ -58,9 +103,9 @@ public class VersusMode extends Activity{
 		user1responseButton.setBackground(null);
 		user2responseButton.setBackground(null);
 		
-		final Handler handler = new Handler();
+		handler = new Handler();
 		
-		Runnable runnable = new Runnable() {
+		runnable = new Runnable() {
 			int i = 0;
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
 			//This boolean hence is true for Chidiya Udd and false for Chidiya not Udd.
@@ -72,6 +117,7 @@ public class VersusMode extends Activity{
 				//took j as new variable, because if i was taken then it was taking i of the next state instead of the current state
 				//Cracked it!
 				final int j=i;
+				
 				
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
@@ -168,6 +214,11 @@ public class VersusMode extends Activity{
 				user2responseButton.setOnTouchListener(user2onTouchListener);
 				
 				//adding delay between each handler event i.e., the changing of the images
+				if (tmpScore1==100 || tmpScore2==100 )
+				{imageQuestions.setImageResource(R.drawable.game_over);
+				onPause();}
+				else
+				{
 				handler.postDelayed(this,1200);
 				
 				//Sequential generator of images...
@@ -176,13 +227,30 @@ public class VersusMode extends Activity{
 				//	i=0;
 
 				//Random generator of images...
-				Random r = new Random();
-				i = r.nextInt(11);
+				i = randomIndex(i,j);
+				}
 			}
 		};
 		
 		//this is how one initialises a handler. 1000ms is the inital delay considered so that the user 
 		//can put his finger before the game begins. 
 		handler.postDelayed(runnable, 1000);
+	}
+	public int randomIndex(int i, int j){
+		//Random generator of images...
+		Random r = new Random();
+		do{
+			i = r.nextInt(11);
+		}while(i==j);
+		return i;
+	}
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		 mp.stop();
+		handler.removeCallbacks(runnable);
+		onCreateDialog();
+		
+		
+		super.onPause();
 	}
 }

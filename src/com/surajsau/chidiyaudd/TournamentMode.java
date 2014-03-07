@@ -3,7 +3,11 @@ package com.surajsau.chidiyaudd;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -22,7 +26,9 @@ public class TournamentMode extends Activity{
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	int tmpScore1 = 0, tmpScore2 = 0, tmpScore3 = 0, tmpScore4 = 0; //this is to increment when correct answer is given!
 	Typeface scoreFont;
-	
+	Runnable runnable;
+	Handler handler;
+	MediaPlayer mp;
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -37,13 +43,40 @@ public class TournamentMode extends Activity{
 		QuestionImage img11= new QuestionImage(R.drawable.image11, true);
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
-	
+		@SuppressWarnings("deprecation")
+		public void onCreateDialog() {
+	        // Use the Builder class for convenient dialog construction
+		AlertDialog alertDialog = new AlertDialog.Builder(TournamentMode.this).create();
+		//alertDialog.setTitle("Title");
+		//alertDialog.setMessage("Your text");
+		alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int which) {
+
+			   //here you can add functions
+				  Intent intent = getIntent();
+				  finish();                
+				  startActivity(intent);
+
+			} });
+		alertDialog.setButton2("Main Menu", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int which) {
+
+			   //here you can add functions
+				  Intent i = new Intent(TournamentMode.this , LaunchActivity.class);
+					finish();
+					startActivity(i);
+
+			} });
+		alertDialog.show();
+	    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tournament_mode);
-		
+		mp = MediaPlayer.create(TournamentMode.this, R.raw.ceza);
+		mp.setLooping(true);
+		mp.start();
 		user1score = (TextView)findViewById(R.id.user1_score_tournament_mode);
 		user2score = (TextView)findViewById(R.id.user2_score_tournament_mode);
 		user3score = (TextView)findViewById(R.id.user3_score_tournament_mode);
@@ -68,14 +101,16 @@ public class TournamentMode extends Activity{
 		//user3ResponseImageButton.setBackground(null);
 		//user4ResponseImageButton.setBackground(null);
 		
-		final Handler handler = new Handler();
-		Runnable runnable = new Runnable() {
+		handler = new Handler();
+		runnable = new Runnable() {
 			int i=0;
 			boolean flagUser1=false, flagUser2=false, flagUser3=false, flagUser4=false;
 			
 			@Override
 			public void run() {
 				final int j = i;
+				
+				
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore1+=10;
@@ -85,10 +120,7 @@ public class TournamentMode extends Activity{
 					user1score.setText(String.valueOf(tmpScore1));
 				}
 				
-				/*A very awkward glitch or bug I don't know. But all the elements are in the right place.
-				 * the user1 button, user1 score, user2 button & user2 score. But, only when I internchage the scores display do 
-				 * the scoring works properly, else 1's score is shown on 2's side and vice versa :/
-				 */
+				
 				
 				//Editing the values after each result for user2
 				if(flagUser2 == true){
@@ -215,18 +247,37 @@ public class TournamentMode extends Activity{
 				user4ResponseImageButton.setOnTouchListener(onTouchListener);
 				
 				//adding delay between each handler event i.e., the changing of the images
-				handler.postDelayed(this,1000);
 				
+				if (tmpScore1==500 || tmpScore2==500 || tmpScore3==500 || tmpScore4==500)
+				{imageQuestions.setImageResource(R.drawable.game_over);
+				onPause();}
+				else
+				{	handler.postDelayed(this,1000);
 				//Sequential generator of images...
 				//i++;
 				//if(i>imageArray.length-1)
 				//	i=0;
 
 				//Random generator of images...
-				Random r = new Random();
-				i = r.nextInt(11);
+				i=randomIndex(i,j);
+				}
 			}
 		};
 		handler.postDelayed(runnable, 1500);
+	}
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		 mp.stop();
+		handler.removeCallbacks(runnable);
+		onCreateDialog();
+		super.onPause();
+	}
+	public int randomIndex(int i, int j){
+		//Random generator of images...
+		Random r = new Random();
+		do{
+			i = r.nextInt(11);
+		}while(i==j);
+		return i;
 	}
 }
