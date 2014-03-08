@@ -180,7 +180,16 @@ public class SingleMode extends Activity{
 						flagTouch=false;
 						i = randomIndex(i, j);
 						userResponseButton.setEnabled(true);
+						//set variable timing start
+						if(tmpScore<100)
 						handler.postDelayed(this, 1200);
+						else if (tmpScore<200)
+							handler.postDelayed(this, 900);
+						else if (tmpScore<400)
+							handler.postDelayed(this, 700);
+						else 
+							handler.postDelayed(this, 500);
+						//set variable timing end
 					}else if(numberOfLives > 0 && flag==false){
 						numberOfLives--;
 						//tmpScore-=10;

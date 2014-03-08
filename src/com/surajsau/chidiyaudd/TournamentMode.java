@@ -254,7 +254,7 @@ public class TournamentMode extends Activity{
 				
 				//adding delay between each handler event i.e., the changing of the images
 				
-				if (tmpScore1==500 || tmpScore2==500 || tmpScore3==500 || tmpScore4==500)
+				if (tmpScore1==100 || tmpScore2==100 || tmpScore3==100 || tmpScore4==100)
 				{imageQuestions.setImageResource(R.drawable.game_over);
 				onPause();}
 				else
@@ -269,6 +269,7 @@ public class TournamentMode extends Activity{
 				}
 			}
 		};
+		
 		handler.postDelayed(runnable, 1500);
 	}
 	protected void onPause() {
