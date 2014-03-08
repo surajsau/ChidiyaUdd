@@ -4,13 +4,13 @@ import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +28,8 @@ public class SingleMode extends Activity{
 	
 	//final int numberOfLives =3;
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
-	ImageButton userResponseButton; //the touch panel where the Chidiya actually Udds!
+	ImageButton userResponseButton, restartButton, mainMenuButton; //the touch panel where the Chidiya actually Udds!
+	TextView score, highScore;
 	private TextView userScore; //the score that gets displayed
 	int tmpScore = 0,high_score; //this is to increment when correct answer is given!
 	Typeface scoreFont;
@@ -36,7 +37,7 @@ public class SingleMode extends Activity{
 	Handler handler;
 	Runnable runnable;
 	MediaPlayer mp;
-	boolean sound1;
+	boolean soundOn;
 	
 	//Question Images List...
 	QuestionImage img1= new QuestionImage(R.drawable.image01, false);
@@ -53,15 +54,55 @@ public class SingleMode extends Activity{
 	QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 	QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 	
-	@SuppressWarnings("deprecation")
 	public void onCreateDialog() {
-        // Use the Builder class for convenient dialog construction
-	AlertDialog alertDialog = new AlertDialog.Builder(SingleMode.this).create();
+	
+    // Use the Builder class for convenient dialog construction
+	final View v = getLayoutInflater().inflate(R.layout.dialog_layout_single_mode, null);
+	Dialog alertDialog = new Dialog(SingleMode.this);
+	alertDialog.setContentView(v);
+	alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+	
+	score = (TextView)v.findViewById(R.id.score);
+	highScore = (TextView)v.findViewById(R.id.high_score_single);
+	restartButton = (ImageButton)v.findViewById(R.id.replay_button_single);
+	mainMenuButton = (ImageButton)v.findViewById(R.id.main_menu_button_single);
+	restartButton.setBackground(null);
+	mainMenuButton.setBackground(null);
+	
 	//alertDialog.setTitle("Title");
 	if (tmpScore == high_score) {
-	alertDialog.setMessage("New High Score="+high_score);}
-	else alertDialog.setMessage("Score="+tmpScore);
-	alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
+		//alertDialog.setMessage("New High Score="+high_score);
+		score.setText("New High Score : "+String.valueOf(tmpScore));
+		highScore.setText(String.valueOf(high_score));
+	}
+	else{
+		score.setText("Your Score is : " + String.valueOf(tmpScore));
+		highScore.setText(String.valueOf(high_score));
+	}
+	
+	restartButton.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = getIntent();
+			  finish();                
+			  startActivity(intent);
+		}
+	});
+	
+	mainMenuButton.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent i = new Intent(SingleMode.this , LaunchActivity.class);
+			finish();
+			startActivity(i);
+		}
+	});
+	
+	/*alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
 		  public void onClick(DialogInterface dialog, int which) {
 
 		   //here you can add functions
@@ -78,9 +119,10 @@ public class SingleMode extends Activity{
 				finish();
 				startActivity(i);
 
-		} });
+		} });*/
 	alertDialog.show();
     }
+	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +131,13 @@ public class SingleMode extends Activity{
 		mp = MediaPlayer.create(SingleMode.this, R.raw.ceza);
 		mp.setLooping(true);
 		//int wrongDone = 0;
+		
+		
 		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
-		sound1 = pref.getBoolean("sound", false); //0 is the default value
-		if(sound1) mp.start();
+		soundOn = pref.getBoolean("sound", false); //0 is the default value
+		if(soundOn) 
+			mp.start();
+		
 		imageQuestions = (ImageView)findViewById(R.id.image_question_single_mode);
 		userResponseButton = (ImageButton)findViewById(R.id.touch_button_single_mode);
 		userScore = (TextView)findViewById(R.id.score_single_mode);
@@ -225,7 +271,14 @@ public class SingleMode extends Activity{
 				    }, 500);*/
 				        
 				    flagTouch = false;
-					handler.postDelayed(this, 1000);
+				    if(tmpScore < 100)
+				    	handler.postDelayed(this, 1200);
+				    else if(tmpScore <200)
+				    	handler.postDelayed(runnable, 1000);
+				    else if(tmpScore <400)
+				    	handler.postDelayed(runnable, 900);
+				    else
+				    	handler.postDelayed(runnable, 750);
 					i = randomIndex(i, j);
 				}
 				//Sequential generator of images...
@@ -272,7 +325,7 @@ public class SingleMode extends Activity{
 			editor.putInt("high_score", tmpScore);
 			editor.commit();
 		}
-		if(this.isFinishing() && sound1) mp.stop();
+		if(this.isFinishing() && soundOn) mp.stop();
 		handler.removeCallbacks(runnable);
 		onCreateDialog();
 		super.onPause();

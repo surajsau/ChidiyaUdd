@@ -19,6 +19,14 @@
 		        android:layout_height="wrap_content"
 		        android:layout_width="wrap_content"
 		        android:layout_centerInParent="true"/>
+        <TextView
+            android:id="@+id/player_1_versus"
+            android:text="Player 1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/user1_touch_button_versus_mode"
+            android:textColor="#000"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
     
     <LinearLayout 
@@ -77,5 +85,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_width="wrap_content"
 		        android:layout_centerInParent="true"/>
+	    <TextView
+            android:id="@+id/player_2_versus"
+            android:text="Player 2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/user2_touch_button_versus_mode"
+            android:textColor="#000"
+            android:layout_centerHorizontal="true"/>
 	</RelativeLayout>
 </LinearLayout>

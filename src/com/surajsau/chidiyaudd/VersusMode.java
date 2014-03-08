@@ -5,12 +5,12 @@ import java.util.Random;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,15 +26,15 @@ import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class VersusMode extends Activity{
 	
-	ImageButton user1responseButton, user2responseButton;
-	TextView user1Score, user2Score;
+	ImageButton user1responseButton, user2responseButton, restartButton, mainMenuButton;
+	TextView user1Score, user2Score,  winningPlayerID;
 	int tmpScore1=0, tmpScore2=0;
 	MediaPlayer mp;
 	ImageView imageQuestions;
 	Typeface scoreFont;
 	Runnable runnable;
 	Handler handler;
-	boolean sound1;
+	boolean soundOn;
 	
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
@@ -51,15 +51,56 @@ public class VersusMode extends Activity{
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 		
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@SuppressLint("NewApi")
 	    public void onCreateDialog() {
 	        // Use the Builder class for convenient dialog construction
-		AlertDialog alertDialog = new AlertDialog.Builder(VersusMode.this).create();
+		// Use the Builder class for convenient dialog construction
+		final View v = getLayoutInflater().inflate(R.layout.dialog_layout_single_mode, null);
+		Dialog alertDialog = new Dialog(VersusMode.this);
+		alertDialog.setContentView(v);
+		alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+		winningPlayerID = (TextView)v.findViewById(R.id.score);
+		restartButton = (ImageButton)v.findViewById(R.id.replay_button_single);
+		mainMenuButton = (ImageButton)v.findViewById(R.id.main_menu_button_single);
+		restartButton.setBackground(null);
+		mainMenuButton.setBackground(null);
+		
 		//alertDialog.setTitle("Title");
-		//alertDialog.setMessage("Your text");
-		alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
+		if (tmpScore1 > tmpScore2) {
+			//alertDialog.setMessage("New High Score="+high_score);
+			winningPlayerID.setText("Player 1 wins!");
+		}else if(tmpScore1 < tmpScore2){
+			winningPlayerID.setText("Player 2 wins!");
+		}else{
+			winningPlayerID.setText("Great Champs! It's a tie!");
+		}
+		
+		restartButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = getIntent();
+				  finish();                
+				  startActivity(intent);
+			}
+		});
+		
+		mainMenuButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(VersusMode.this , LaunchActivity.class);
+				finish();
+				startActivity(i);
+			}
+		});
+		
+		/*alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
 			  public void onClick(DialogInterface dialog, int which) {
 
 			   //here you can add functions
@@ -72,11 +113,11 @@ public class VersusMode extends Activity{
 			  public void onClick(DialogInterface dialog, int which) {
 
 			   //here you can add functions
-				  Intent i = new Intent(VersusMode.this , LaunchActivity.class);
+				  Intent i = new Intent(SingleMode.this , LaunchActivity.class);
 					finish();
 					startActivity(i);
 
-			} });
+			} });*/
 		alertDialog.show();
 	    }
 	
@@ -91,8 +132,10 @@ public class VersusMode extends Activity{
 		mp = MediaPlayer.create(VersusMode.this, R.raw.ceza);
 		mp.setLooping(true);
 		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
-		sound1 = pref.getBoolean("sound", false); //0 is the default value
-		if(sound1) mp.start();
+		soundOn = pref.getBoolean("sound", false); //0 is the default value
+		if(soundOn)
+			mp.start();
+		
 		imageQuestions = (ImageView)findViewById(R.id.image_question_versus_mode);
 		user1responseButton = (ImageButton)findViewById(R.id.user1_touch_button_versus_mode);
 		user2responseButton = (ImageButton)findViewById(R.id.user2_touch_button_versus_mode);
@@ -251,7 +294,8 @@ public class VersusMode extends Activity{
 	}
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		if(sound1) mp.stop();
+		if(soundOn)
+			mp.stop();
 		handler.removeCallbacks(runnable);
 		onCreateDialog();
 		
