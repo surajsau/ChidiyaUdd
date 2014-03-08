@@ -100,8 +100,8 @@ public final class R {
         public static final int lives_and_score_panel=0x7f09001e;
         public static final int lives_panel=0x7f09001f;
         public static final int main_menu_button_single=0x7f090012;
-        public static final int main_menu_button_tournament=0x7f090017;
-        public static final int main_menu_button_versus=0x7f090015;
+        public static final int main_menu_button_tournament=0x7f090015;
+        public static final int main_menu_button_versus=0x7f090017;
         public static final int music_button=0x7f09001b;
         public static final int options_panel=0x7f090002;
         public static final int panel_lower_half=0x7f090007;
@@ -109,8 +109,8 @@ public final class R {
         public static final int player_1_versus=0x7f09003a;
         public static final int player_2_versus=0x7f09003f;
         public static final int replay_button_single=0x7f090010;
-        public static final int replay_button_tournament=0x7f090016;
-        public static final int replay_button_versus=0x7f090014;
+        public static final int replay_button_tournament=0x7f090014;
+        public static final int replay_button_versus=0x7f090016;
         public static final int score=0x7f09000b;
         public static final int score_panel=0x7f090023;
         public static final int score_single_mode=0x7f090024;
@@ -134,8 +134,8 @@ public final class R {
     public static final class layout {
         public static final int activity_launch=0x7f030000;
         public static final int dialog_layout_single_mode=0x7f030001;
-        public static final int dialog_layout_versus_mode=0x7f030002;
-        public static final int dialog_tournament_mode=0x7f030003;
+        public static final int dialog_layout_tournament_mode=0x7f030002;
+        public static final int dialog_layout_versus_mode=0x7f030003;
         public static final int settings_mode=0x7f030004;
         public static final int single_mode=0x7f030005;
         public static final int tournament_mode=0x7f030006;
@@ -145,7 +145,8 @@ public final class R {
         public static final int launch=0x7f080000;
     }
     public static final class raw {
-        public static final int ceza=0x7f040000;
+        public static final int launchmusic=0x7f040000;
+        public static final int modemusic=0x7f040001;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;

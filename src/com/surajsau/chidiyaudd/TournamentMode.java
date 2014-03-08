@@ -53,39 +53,39 @@ public class TournamentMode extends Activity{
 		
 		public void onCreateDialog() {
 	        // Use the Builder class for convenient dialog construction
-			final View v = getLayoutInflater().inflate(R.layout.dialog_layout_single_mode, null);
+			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_layout_tournament_mode, null);
 			Dialog alertDialog = new Dialog(TournamentMode.this);
-			alertDialog.setContentView(v);
+			alertDialog.setContentView(dialogView);
 			alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-			winningPlayerID = (TextView)v.findViewById(R.id.score);
-			restartButton = (ImageButton)v.findViewById(R.id.replay_button_single);
-			mainMenuButton = (ImageButton)v.findViewById(R.id.main_menu_button_single);
+			winningPlayerID = (TextView)dialogView.findViewById(R.id.score);
+			restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_single);
+			mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_single);
 			restartButton.setBackground(null);
 			mainMenuButton.setBackground(null);
-			int counter=0;
+			int counter=0; //to count number of players who win finally
+			
+			//Initialising the string to be written in the dialog box "Player....wins/win!"
 			String winners = "Player ";
-			//alertDialog.setTitle("Title");
-			int x=0;
+			
 			for(int i=0; i<4; i++){
-				x=i+1;
-				if(tmpScore[i]==50 && counter==0)
-					
-				{	
-					winners =winners + " " + x;
+				int x=i+1;
+				if(tmpScore[i]==50 && counter==0){	
+					winners = winners + " " + x;
 					counter++;
-				}
-				else if(tmpScore[i]==50)
-				{winners =winners + ", " + x;
-				counter++;
+				}else if(tmpScore[i]==50){
+					winners =winners + ", " + x;
+					counter++;
 				}
 			}
 			
-			winners = winners + " win!";
-			
+			if(counter == 1)
+				winners = winners + " wins!";
+			else
+				winners = winners + " win!";
+
 			winningPlayerID.setText(winners);
-			restartButton.setOnClickListener(new View.OnClickListener() {
-				
+			restartButton.setOnClickListener(new View.OnClickListener() {	
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -95,8 +95,7 @@ public class TournamentMode extends Activity{
 				}
 			});
 			
-			mainMenuButton.setOnClickListener(new View.OnClickListener() {
-				
+			mainMenuButton.setOnClickListener(new View.OnClickListener() {				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -105,37 +104,24 @@ public class TournamentMode extends Activity{
 					startActivity(i);
 				}
 			});
-			
-			/*alertDialog.setButton("Restart", new DialogInterface.OnClickListener() {
-				  public void onClick(DialogInterface dialog, int which) {
-
-				   //here you can add functions
-					  Intent intent = getIntent();
-					  finish();                
-					  startActivity(intent);
-
-				} });
-			alertDialog.setButton2("Main Menu", new DialogInterface.OnClickListener() {
-				  public void onClick(DialogInterface dialog, int which) {
-
-				   //here you can add functions
-					  Intent i = new Intent(SingleMode.this , LaunchActivity.class);
-						finish();
-						startActivity(i);
-
-				} });*/
 			alertDialog.show();
-	    }
+		}	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tournament_mode);
-		mp = MediaPlayer.create(TournamentMode.this, R.raw.ceza);
+		
+		//sound state of the background music
+		mp = MediaPlayer.create(TournamentMode.this, R.raw.modemusic);
 		mp.setLooping(true);
-		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
-		soundOn = pref.getBoolean("sound", false); //0 is the default value
-		if(soundOn) mp.start();
+		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+		soundOn = musicPref.getBoolean("sound", false); //0 is the default value
+		if(soundOn)
+			mp.start();
+		
+		//defining the various views of layout
 		user1score = (TextView)findViewById(R.id.user1_score_tournament_mode);
 		user2score = (TextView)findViewById(R.id.user2_score_tournament_mode);
 		user3score = (TextView)findViewById(R.id.user3_score_tournament_mode);
@@ -153,20 +139,16 @@ public class TournamentMode extends Activity{
 		
 		imageQuestions = (ImageView)findViewById(R.id.image_question_tournament_mode);
 		
-		//Adding Buka Birds font to score...
+		//Adding RioGrande font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		user1score.setTypeface(scoreFont);
 		user2score.setTypeface(scoreFont);
 		user3score.setTypeface(scoreFont);
 		user4score.setTypeface(scoreFont);
 		
+		//initialising all scores to 0 initially
 		for(int k=0;k<4;k++)
 			tmpScore[k]=0;
-		
-		//user1ResponseImageButton.setBackground(null);
-		//user2ResponseImageButton.setBackground(null);
-		//user3ResponseImageButton.setBackground(null);
-		//user4ResponseImageButton.setBackground(null);
 		
 		handler = new Handler();
 		runnable = new Runnable() {
@@ -176,18 +158,16 @@ public class TournamentMode extends Activity{
 			@Override
 			public void run() {
 				final int j = i;
-				
-				
+		
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore[0]+=10;
 					user1score.setText(String.valueOf(tmpScore[0]));
 					flagUser1 = false;
 				}else{
+					tmpScore[0]-=10;
 					user1score.setText(String.valueOf(tmpScore[0]));
-				}
-				
-				
+				}				
 				
 				//Editing the values after each result for user2
 				if(flagUser2 == true){
@@ -195,6 +175,7 @@ public class TournamentMode extends Activity{
 					user2score.setText(String.valueOf(tmpScore[1]));
 					flagUser2 = false;
 				}else{
+					tmpScore[1]-=10;
 					user2score.setText(String.valueOf(tmpScore[1]));
 				}
 				
@@ -204,15 +185,17 @@ public class TournamentMode extends Activity{
 					user3score.setText(String.valueOf(tmpScore[2]));
 					flagUser3 = false;
 				}else{
+					tmpScore[2]-=10;
 					user3score.setText(String.valueOf(tmpScore[2]));
 				}
 				
 				//Editing the values after each result for user2
 				if(flagUser4 == true){
-					tmpScore[3]+=10;
+					tmpScore[3]-=10;
 					user4score.setText(String.valueOf(tmpScore[3]));
 					flagUser4 = false;
 				}else{
+					tmpScore[3]+=10;
 					user4score.setText(String.valueOf(tmpScore[3]));
 				}
 				
@@ -315,7 +298,7 @@ public class TournamentMode extends Activity{
 				
 				//adding delay between each handler event i.e., the changing of the images
 				
-				if (tmpScore[0]==50 || tmpScore[1]==50 || tmpScore[2]==50 || tmpScore[3]==50)
+				if (tmpScore[0]==100 || tmpScore[1]==100 || tmpScore[2]==100 || tmpScore[3]==100)
 				{imageQuestions.setImageResource(R.drawable.game_over);
 				onPause();}
 				else
@@ -339,6 +322,7 @@ public class TournamentMode extends Activity{
 		onCreateDialog();
 		super.onPause();
 	}
+	
 	public int randomIndex(int i, int j){
 		//Random generator of images...
 		Random r = new Random();
