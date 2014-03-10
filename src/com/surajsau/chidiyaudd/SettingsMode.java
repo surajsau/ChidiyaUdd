@@ -97,8 +97,9 @@ public class SettingsMode extends Activity{
                 rulesDesc.setTypeface(scoreFont);
                 audioDesc.setTypeface(scoreFont);
                 //deciding the sound state of the game...
-                final Editor editor = pref.edit();
-                soundOn = pref.getBoolean("sound", true);
+                SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+                final Editor editor = musicPref.edit();
+                soundOn = musicPref.getBoolean("sound", true);
                 if(soundOn){
                     musicToggleButton.setImageResource(R.drawable.music_on_image);
                     //startService(new Intent(this, LaunchMusicService.class));
@@ -135,7 +136,7 @@ public class SettingsMode extends Activity{
                 musicToggleButton.setOnClickListener(onClickListener);
                 
                 rulesButton.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
@@ -145,7 +146,7 @@ public class SettingsMode extends Activity{
 				});
                 
                 infoButton.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub

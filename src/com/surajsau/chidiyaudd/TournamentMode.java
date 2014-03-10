@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class TournamentMode extends Activity{
-	
+
 	ImageButton user1ResponseImageButton, user2ResponseImageButton, user3ResponseImageButton, user4ResponseImageButton;
 	ImageButton _100mode, _200mode, _300mode; 
 	ImageButton restartButton, mainMenuButton;
@@ -31,7 +31,7 @@ public class TournamentMode extends Activity{
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	int tmpScore[]=new int[4];
 	MediaPlayer mp;
-	
+
 	//int tmpScore1 = 0, tmpScore2 = 0, tmpScore3 = 0, tmpScore4 = 0; //this is to increment when correct answer is given!
 	Typeface scoreFont, sentenceFont;
 	Runnable runnable;
@@ -39,7 +39,7 @@ public class TournamentMode extends Activity{
 	boolean soundOn;
 	int delayBetweenImages = 1000, roundCounter=1;
 	boolean toNextRound[]={true,true,true,true};
-	
+
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -54,7 +54,7 @@ public class TournamentMode extends Activity{
 		QuestionImage img11= new QuestionImage(R.drawable.image11, true);
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
-		
+
 		//function for the beginning dialog
 		/*public void onCreateBeginningDialog(){
 			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_begin_tournament_mode, null);
@@ -111,7 +111,7 @@ public class TournamentMode extends Activity{
 			layoutParams.height = 600;
 			alertDialog.getWindow().setAttributes(layoutParams);
 		}*/
-		
+
 		//function for the end dialog
 		public void onCreateDialog() {
 	        // Use the Builder class for convenient dialog construction
@@ -126,10 +126,10 @@ public class TournamentMode extends Activity{
 			restartButton.setBackground(null);
 			mainMenuButton.setBackground(null);
 			int winnerCounter=0; //to count number of players who win finally
-			
+
 			//Initialising the string to be written in the dialog box "Player....wins/win!"
 			String winners = "Player ";
-			
+
 			for(int i=0; i<4; i++){
 				int playerID=i+1;
 				if(tmpScore[i]==100 && winnerCounter==0){	
@@ -140,7 +140,7 @@ public class TournamentMode extends Activity{
 					winnerCounter++;
 				}
 			}
-			
+
 			if(winnerCounter == 1)
 				winners = winners + " wins!";
 			else
@@ -148,28 +148,27 @@ public class TournamentMode extends Activity{
 
 			winningPlayerID.setText(winners);
 			winningPlayerID.setTypeface(scoreFont);
-			
+
 			restartButton.setOnClickListener(new View.OnClickListener() {	
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent = getIntent();
-					  finish();                
-					  startActivity(intent);
+					finish();
+					startActivity(getIntent());
 				}
 			});
-			
+
 			mainMenuButton.setOnClickListener(new View.OnClickListener() {				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent i = new Intent(TournamentMode.this , LaunchActivity.class);
+					//Intent i = new Intent(TournamentMode.this , LaunchActivity.class);
 					finish();
-					startActivity(i);
+					//startActivity(i);
 				}
 			});
 			alertDialog.show();
-			
+
 			//setting height and width params
 			WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
 			layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
@@ -177,38 +176,38 @@ public class TournamentMode extends Activity{
 			layoutParams.height = 500;
 			alertDialog.getWindow().setAttributes(layoutParams);
 		}	
-		
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tournament_mode);
-		
+
 		//sound state of the background music
 		mp = MediaPlayer.create(TournamentMode.this, R.raw.modemusic);
 		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
 		soundOn = musicPref.getBoolean("sound", false); //0 is the default value
 		if(soundOn)
 			mp.start();
-		
+
 		//defining the various views of layout
 		user1score = (TextView)findViewById(R.id.user1_score_tournament_mode);
 		user2score = (TextView)findViewById(R.id.user2_score_tournament_mode);
 		user3score = (TextView)findViewById(R.id.user3_score_tournament_mode);
 		user4score = (TextView)findViewById(R.id.user4_score_tournament_mode);
-		
+
 		user1ResponseImageButton = (ImageButton)findViewById(R.id.user1_touch_button_tournament_mode);
 		user2ResponseImageButton = (ImageButton)findViewById(R.id.user2_touch_button_tournament_mode);
 		user3ResponseImageButton = (ImageButton)findViewById(R.id.user3_touch_button_tournament_mode);
 		user4ResponseImageButton = (ImageButton)findViewById(R.id.user4_touch_button_tournament_mode);
-		
+
 		user1ResponseImageButton.setBackground(null);
 		user2ResponseImageButton.setBackground(null);
 		user3ResponseImageButton.setBackground(null);
 		user4ResponseImageButton.setBackground(null);
-		
+
 		imageQuestions = (ImageView)findViewById(R.id.image_question_tournament_mode);
-		
+
 		//Adding RioGrande font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		sentenceFont = Typeface.createFromAsset(getAssets(), "fonts/NASHVILL.TTF");
@@ -216,20 +215,20 @@ public class TournamentMode extends Activity{
 		user2score.setTypeface(scoreFont);
 		user3score.setTypeface(scoreFont);
 		user4score.setTypeface(scoreFont);
-		
+
 		//initialising all scores to 0 initially
 		for(int k=0;k<4;k++)
 			tmpScore[k]=0;
-		
+
 		handler = new Handler();
 		runnable = new Runnable() {
 			int i=0;
 			boolean flagUser1=false, flagUser2=false, flagUser3=false, flagUser4=false;
-			
+
 			@Override
 			public void run() {
 				final int j = i;
-		
+
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore[0]+=10;
@@ -238,7 +237,7 @@ public class TournamentMode extends Activity{
 				}else{
 					user1score.setText(String.valueOf(tmpScore[0]));
 				}				
-				
+
 				//Editing the values after each result for user2
 				if(flagUser2 == true){
 					tmpScore[1]+=10;
@@ -247,7 +246,7 @@ public class TournamentMode extends Activity{
 				}else{
 					user2score.setText(String.valueOf(tmpScore[1]));
 				}
-				
+
 				//Editing the values after each result for user2
 				if(flagUser3 == true){
 					tmpScore[2]+=10;
@@ -256,7 +255,7 @@ public class TournamentMode extends Activity{
 				}else{
 					user3score.setText(String.valueOf(tmpScore[2]));
 				}
-				
+
 				//Editing the values after each result for user2
 				if(flagUser4 == true){
 					tmpScore[3]+=10;
@@ -265,37 +264,37 @@ public class TournamentMode extends Activity{
 				}else{
 					user4score.setText(String.valueOf(tmpScore[3]));
 				}
-				
+
 				imageQuestions.setImageResource(imageArray[i].getImageID());
-				
+
 				if(toNextRound[0])
 					user1ResponseImageButton.setEnabled(true);
 				else{
 					user1ResponseImageButton.setEnabled(false);
 					user1ResponseImageButton.setVisibility(View.GONE);
 				}
-				
+
 				if(toNextRound[1])
 					user2ResponseImageButton.setEnabled(true);
 				else{
 					user2ResponseImageButton.setEnabled(false);
 					user2ResponseImageButton.setVisibility(View.GONE);
 				}
-				
+
 				if(toNextRound[2])
 					user3ResponseImageButton.setEnabled(true);
 				else{
 					user3ResponseImageButton.setEnabled(false);
 					user3ResponseImageButton.setVisibility(View.GONE);
 				}
-				
+
 				if(toNextRound[3])
 					user4ResponseImageButton.setEnabled(true);
 				else{
 					user4ResponseImageButton.setEnabled(false);
 					user4ResponseImageButton.setVisibility(View.GONE);
 				}
-				
+
 				OnTouchListener onTouchListener = new OnTouchListener() {					
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
@@ -350,7 +349,7 @@ public class TournamentMode extends Activity{
 								}
 							}
 							break;
-							
+
 						case MotionEvent.ACTION_MOVE:
 							if(v.getId()==R.id.user1_touch_button_tournament_mode){
 								if(imageArray[j].getCanFly()==true)
@@ -381,14 +380,14 @@ public class TournamentMode extends Activity{
 						return false;
 					}
 				};
-				
+
 				user1ResponseImageButton.setOnTouchListener(onTouchListener);
 				user2ResponseImageButton.setOnTouchListener(onTouchListener);
 				user3ResponseImageButton.setOnTouchListener(onTouchListener);
 				user4ResponseImageButton.setOnTouchListener(onTouchListener);
-				
+
 				//adding delay between each handler event i.e., the changing of the images
-				
+
 				int playersNextRound = 0;
 				if (tmpScore[0]==100 || tmpScore[1]==100 || tmpScore[2]==100 || tmpScore[3]==100){
 					for(int i=0; i<4; i++){
@@ -397,7 +396,7 @@ public class TournamentMode extends Activity{
 						else
 							toNextRound[i]=false;							
 					}
-					
+
 					if(playersNextRound==1){
 						imageQuestions.setImageResource(R.drawable.game_over);
 						onPause();
@@ -424,7 +423,7 @@ public class TournamentMode extends Activity{
 		};
 		handler.postDelayed(runnable, 1500);
 	}
-	
+
 	protected void onPause() {
 		if(soundOn)
 			mp.stop();
@@ -432,7 +431,7 @@ public class TournamentMode extends Activity{
 		onCreateDialog();
 		super.onPause();
 	}
-	
+
 	public int randomIndex(int i, int j){
 		//Random generator of images...
 		Random r = new Random();

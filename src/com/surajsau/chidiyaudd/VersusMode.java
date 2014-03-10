@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.surajsau.chidiyaudd.objects.QuestionImage;
 
 public class VersusMode extends Activity{
-	
+
 	ImageButton user1responseButton, user2responseButton, restartButton, mainMenuButton;
 	TextView user1Score, user2Score,  winningPlayerID;
 	int tmpScore1=0, tmpScore2=0;
@@ -36,7 +36,7 @@ public class VersusMode extends Activity{
 	MediaPlayer mp;
 	Handler handler;
 	boolean soundOn;
-	
+
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
 		QuestionImage img2= new QuestionImage(R.drawable.image02, false);
@@ -51,7 +51,7 @@ public class VersusMode extends Activity{
 		QuestionImage img11= new QuestionImage(R.drawable.image11, true);
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
-		
+
 	//@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@SuppressLint("NewApi")
@@ -62,13 +62,13 @@ public class VersusMode extends Activity{
 			Dialog alertDialog = new Dialog(VersusMode.this);
 			alertDialog.setContentView(dialogView);
 			alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-	
+
 			winningPlayerID = (TextView)dialogView.findViewById(R.id.score);
 			restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_versus);
 			mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_versus);
 			restartButton.setBackground(null);
 			mainMenuButton.setBackground(null);
-			
+
 			//setting text content of DialogBox
 			if (tmpScore1 > tmpScore2) {
 				winningPlayerID.setText("Player 1 wins!");
@@ -77,32 +77,31 @@ public class VersusMode extends Activity{
 			}else{
 				winningPlayerID.setText("It's a tie!");
 			}
-			
+
 			winningPlayerID.setTypeface(scoreFont);
-			
+
 			restartButton.setOnClickListener(new View.OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent = getIntent();
-					  finish();                
-					  startActivity(intent);
+					finish();
+					startActivity(getIntent());
 				}
 			});
-			
+
 			mainMenuButton.setOnClickListener(new View.OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent i = new Intent(VersusMode.this , LaunchActivity.class);
+					//Intent i = new Intent(VersusMode.this , LaunchActivity.class);
 					finish();
-					startActivity(i);
+					//startActivity(i);
 				}
 			});
 			alertDialog.show();
-			
+
 			//setting height and width params
 			WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
 			layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
@@ -110,16 +109,16 @@ public class VersusMode extends Activity{
 			layoutParams.height = 500;
 			alertDialog.getWindow().setAttributes(layoutParams);
 	    }
-	
-	
-	
+
+
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@SuppressLint("NewApi")
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.versus_mode);
-		
+
 		//setting the sound state of the activity
 		mp = MediaPlayer.create(VersusMode.this, R.raw.modemusic);
 		mp.setLooping(true);
@@ -127,39 +126,39 @@ public class VersusMode extends Activity{
 		soundOn = musicPref.getBoolean("sound", false); //0 is the default value
 		if(soundOn)
 			mp.start();
-		
+
 		imageQuestions = (ImageView)findViewById(R.id.image_question_versus_mode);
 		user1responseButton = (ImageButton)findViewById(R.id.user1_touch_button_versus_mode);
 		user2responseButton = (ImageButton)findViewById(R.id.user2_touch_button_versus_mode);
 
 		user1Score = (TextView)findViewById(R.id.user1_score_versus_mode);
 		user2Score = (TextView)findViewById(R.id.user2_score_versus_mode);
-		
+
 		//Adding RioGrande font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		sentenceFont = Typeface.createFromAsset(getAssets(), "fonts/NASHVILL.TTF");
 		user1Score.setTypeface(scoreFont);
 		user2Score.setTypeface(scoreFont);
-		
+
 		user1responseButton.setBackground(null);
 		user2responseButton.setBackground(null);
-		
+
 		handler = new Handler();
-		
+
 		runnable = new Runnable() {
 			int i = 0;
 			//This flag was introduced for the sole purpose that it gave the status of the finger at the very end of a run()
 			//This boolean hence is true for Chidiya Udd and false for Chidiya not Udd.
 			boolean flagUser1 = false;
 			boolean flagUser2 = false;
-			
+
 			@Override
 			public void run() {				
 				//took j as new variable, because if i was taken then it was taking i of the next state instead of the current state
 				//Cracked it!
 				final int j=i;
-				
-				
+
+
 				//Editing the values after each result for user1
 				if(flagUser1 == true){
 					tmpScore1+=10;
@@ -168,12 +167,12 @@ public class VersusMode extends Activity{
 				}else{
 					user1Score.setText(String.valueOf(tmpScore1));
 				}
-				
+
 				/*A very awkward glitch or bug I don't know. But all the elements are in the right place.
 				 * the user1 button, user1 score, user2 button & user2 score. But, only when I internchage the scores display do 
 				 * the scoring works properly, else 1's score is shown on 2's side and vice versa :/
 				 */
-				
+
 				//Editing the values after each result for user2
 				if(flagUser2 == true){
 					tmpScore2+=10;
@@ -182,17 +181,17 @@ public class VersusMode extends Activity{
 				}else{
 					user2Score.setText(String.valueOf(tmpScore2));
 				}
-				
+
 				imageQuestions.setImageResource(imageArray[i].getImageID());
 				user1responseButton.setEnabled(true);
 				user2responseButton.setEnabled(true);
-				
+
 				//try{Thread.sleep(250);}
 				//catch(InterruptedException e){}
-				
+
 				//defined touch listener for user 1
 				OnTouchListener user1onTouchListener = new OnTouchListener() {
-					
+
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						// switch case is used instead of if or else as it keeps iterating dynamically till the end.
@@ -209,7 +208,7 @@ public class VersusMode extends Activity{
 								user1responseButton.setEnabled(false);
 							}
 							break;
-							
+
 						case MotionEvent.ACTION_MOVE:
 							if(imageArray[j].getCanFly()==true)
 								flagUser1 = false;
@@ -219,10 +218,10 @@ public class VersusMode extends Activity{
 						return false;
 					}
 				};
-				
+
 				//defined touch listener for user 1
 				OnTouchListener user2onTouchListener = new OnTouchListener() {
-					
+
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						// switch case is used instead of if or else as it keeps iterating dynamically till the end.
@@ -239,7 +238,7 @@ public class VersusMode extends Activity{
 								user2responseButton.setEnabled(false);
 							}
 							break;
-							
+
 						case MotionEvent.ACTION_MOVE:
 							if(imageArray[j].getCanFly()==true)
 								flagUser2 = false;
@@ -250,10 +249,10 @@ public class VersusMode extends Activity{
 					}
 				};
 
-				
+
 				user1responseButton.setOnTouchListener(user1onTouchListener);
 				user2responseButton.setOnTouchListener(user2onTouchListener);
-				
+
 				//adding delay between each handler event i.e., the changing of the images
 				if (tmpScore1==100 || tmpScore2==100 )
 				{imageQuestions.setImageResource(R.drawable.game_over);
@@ -261,7 +260,7 @@ public class VersusMode extends Activity{
 				else
 				{
 				handler.postDelayed(this,1200);
-				
+
 				//Sequential generator of images...
 				//i++;
 				//if(i>imageArray.length-1)
@@ -272,7 +271,7 @@ public class VersusMode extends Activity{
 				}
 			}
 		};
-		
+
 		//this is how one initialises a handler. 1000ms is the inital delay considered so that the user 
 		//can put his finger before the game begins. 
 		handler.postDelayed(runnable, 1000);
@@ -285,7 +284,7 @@ public class VersusMode extends Activity{
 		}while(i==j);
 		return i;
 	}
-	
+
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		if(soundOn)
