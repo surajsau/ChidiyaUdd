@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,14 +30,14 @@ public class SingleMode extends Activity{
 	//final int numberOfLives =3;
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	ImageButton userResponseButton, restartButton, mainMenuButton; //the touch panel where the Chidiya actually Udds!
-	TextView score, highScore;
+	TextView score, highScore, highScoreSentence, highScoreText;
 	private TextView userScore; //the score that gets displayed
 	int tmpScore = 0,high_score; //this is to increment when correct answer is given!
-	Typeface scoreFont;
+	Typeface scoreFont, sentenceFont;
+	MediaPlayer mp;
 	LinearLayout scoreLayout;
 	Handler handler;
 	Runnable runnable;
-	MediaPlayer mp;
 	boolean soundOn;
 	
 	//Question Images List...
@@ -56,7 +57,7 @@ public class SingleMode extends Activity{
 	
 	public void onCreateDialog() {	
 	    // Defining view of the dialog from which layout is to be seen
-		final View dialogView = getLayoutInflater().inflate(R.layout.dialog_layout_single_mode, null);
+		final View dialogView = getLayoutInflater().inflate(R.layout.dialog_end_single_mode, null);
 		Dialog alertDialog = new Dialog(SingleMode.this);
 		alertDialog.setContentView(dialogView);
 		alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -64,18 +65,27 @@ public class SingleMode extends Activity{
 		//IMPORTANT : all the views in this take findViewById from the dialogView...else error comes :)
 		score = (TextView)dialogView.findViewById(R.id.score);
 		highScore = (TextView)dialogView.findViewById(R.id.high_score_single);
+		highScoreSentence = (TextView)dialogView.findViewById(R.id.high_score_text);
+		highScoreText = (TextView)dialogView.findViewById(R.id.high_score_text);
 		restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_single);
 		mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_single);
+		
 		restartButton.setBackground(null);
 		mainMenuButton.setBackground(null);
 		
+		highScore.setTypeface(scoreFont);
+		highScoreSentence.setTypeface(sentenceFont);
+		score.setTypeface(scoreFont);
+		
 		//Setting the text content of the DialogBox
 		if (tmpScore == high_score) {
-			score.setText("New High Score : "+String.valueOf(tmpScore));
+			score.setText("New High Score "+String.valueOf(tmpScore));
 			highScore.setText(String.valueOf(high_score));
+			highScore.setVisibility(View.GONE);
+			highScoreText.setVisibility(View.GONE);
 		}
 		else{
-			score.setText("Your Score is : " + String.valueOf(tmpScore));
+			score.setText(String.valueOf(tmpScore));
 			highScore.setText(String.valueOf(high_score));
 		}
 		
@@ -101,6 +111,19 @@ public class SingleMode extends Activity{
 			}
 		});
 		alertDialog.show();
+		
+		//setting height and width params
+		WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+		layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+		if(tmpScore==high_score){
+			layoutParams.width = 750; //optimum values
+			layoutParams.height = 600;
+		}
+		else{
+			layoutParams.height = 600;
+			layoutParams.width = 500;
+		}
+		alertDialog.getWindow().setAttributes(layoutParams);
     }
 	
 	@SuppressLint("NewApi")
@@ -109,9 +132,8 @@ public class SingleMode extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.single_mode);
 		
-		//sound state of the background music
+		//sound state of the background music	
 		mp = MediaPlayer.create(SingleMode.this, R.raw.modemusic);
-		mp.setLooping(true);		
 		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
 		soundOn = musicPref.getBoolean("sound", false); //'off' is the default value
 		if(soundOn) 
@@ -124,6 +146,7 @@ public class SingleMode extends Activity{
 		scoreLayout = (LinearLayout)findViewById(R.id.score_panel);
 		
 		//Adding Riogrande font to score...
+		sentenceFont = Typeface.createFromAsset(getAssets(), "fonts/NASHVILL.TTF");
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		userScore.setTypeface(scoreFont);
 		
@@ -291,25 +314,38 @@ public class SingleMode extends Activity{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		//getting preferences for high score part
-		SharedPreferences pref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+		SharedPreferences pref = this.getSharedPreferences("highScoreKey", Context.MODE_PRIVATE);
 		try{
-		high_score = pref.getInt("high_score", 0); //0 is the default value
+		high_score = pref.getInt("high_score_key", 0); //0 is the default value
 		}catch(Exception e)		
 		{
 			Editor editor = pref.edit();
-			editor.putInt("high_score", 0);
+			editor.putInt("high_score_key", 0);
 			editor.commit();
 		}
 		if(tmpScore>high_score)
 		{
 			high_score=tmpScore;
 			Editor editor = pref.edit();
-			editor.putInt("high_score", tmpScore);
+			editor.putInt("high_score_key", tmpScore);
 			editor.commit();
 		}
-		if(this.isFinishing() && soundOn) mp.stop();
+		
+		if(this.isFinishing() && soundOn)
+			mp.stop();
 		handler.removeCallbacks(runnable);
 		onCreateDialog();
 		super.onPause();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if(mp!=null && this.isFinishing() && soundOn){
+			mp.stop();
+			mp.release();
+			mp = null;
+		}
 	}
 }

@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,17 +25,20 @@ import com.surajsau.chidiyaudd.objects.QuestionImage;
 public class TournamentMode extends Activity{
 	
 	ImageButton user1ResponseImageButton, user2ResponseImageButton, user3ResponseImageButton, user4ResponseImageButton;
+	ImageButton _100mode, _200mode, _300mode; 
 	ImageButton restartButton, mainMenuButton;
-	TextView user1score, user2score, user3score, user4score, winningPlayerID;
+	TextView user1score, user2score, user3score, user4score, winningPlayerID, beginDialog;
 	ImageView imageQuestions; //the panel showing the image to be Udd-ed!
 	int tmpScore[]=new int[4];
+	MediaPlayer mp;
 	
 	//int tmpScore1 = 0, tmpScore2 = 0, tmpScore3 = 0, tmpScore4 = 0; //this is to increment when correct answer is given!
-	Typeface scoreFont;
+	Typeface scoreFont, sentenceFont;
 	Runnable runnable;
 	Handler handler;
-	MediaPlayer mp;
 	boolean soundOn;
+	int delayBetweenImages = 1000, roundCounter=1;
+	boolean toNextRound[]={true,true,true,true};
 	
 	//Question Images List...
 		QuestionImage img1= new QuestionImage(R.drawable.image01, false);
@@ -51,40 +55,100 @@ public class TournamentMode extends Activity{
 		QuestionImage img12= new QuestionImage(R.drawable.image12, false);
 		QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
 		
+		//function for the beginning dialog
+		/*public void onCreateBeginningDialog(){
+			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_begin_tournament_mode, null);
+			Dialog alertDialog = new Dialog(TournamentMode.this);
+			alertDialog.setContentView(dialogView);
+			alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+			
+			_100mode = (ImageButton)dialogView.findViewById(R.id.hundred_mode_tournament);
+			_200mode = (ImageButton)dialogView.findViewById(R.id.two_hundred_mode_tournament);
+			_300mode = (ImageButton)dialogView.findViewById(R.id.three_hundred_mode_tournament);
+			beginDialog = (TextView)dialogView.findViewById(R.id.begin_dialog_text);
+			
+			beginDialog.setTypeface(scoreFont);
+			
+			_100mode.setBackground(null);
+			_200mode.setBackground(null);
+			_300mode.setBackground(null);
+			
+			_100mode.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					thresh = 100;
+					timeDelay = 750;
+					modeSelected = true;
+				}
+			});
+			
+			_200mode.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					thresh = 200;
+					timeDelay = 875;
+					modeSelected = true;
+				}
+			});
+			
+			_100mode.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					thresh = 100;
+					timeDelay = 1000;
+					modeSelected = true;
+				}
+			});
+			alertDialog.show();
+			
+			//setting height and width params
+			WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+			layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+			layoutParams.width = 800;
+			layoutParams.height = 600;
+			alertDialog.getWindow().setAttributes(layoutParams);
+		}*/
+		
+		//function for the end dialog
 		public void onCreateDialog() {
 	        // Use the Builder class for convenient dialog construction
-			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_layout_tournament_mode, null);
+			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_end_tournament_mode, null);
 			Dialog alertDialog = new Dialog(TournamentMode.this);
 			alertDialog.setContentView(dialogView);
 			alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 			winningPlayerID = (TextView)dialogView.findViewById(R.id.score);
-			restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_single);
-			mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_single);
+			restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_tournament);
+			mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_tournament);
 			restartButton.setBackground(null);
 			mainMenuButton.setBackground(null);
-			int counter=0; //to count number of players who win finally
+			int winnerCounter=0; //to count number of players who win finally
 			
 			//Initialising the string to be written in the dialog box "Player....wins/win!"
 			String winners = "Player ";
 			
 			for(int i=0; i<4; i++){
-				int x=i+1;
-				if(tmpScore[i]==50 && counter==0){	
-					winners = winners + " " + x;
-					counter++;
-				}else if(tmpScore[i]==50){
-					winners =winners + ", " + x;
-					counter++;
+				int playerID=i+1;
+				if(tmpScore[i]==100 && winnerCounter==0){	
+					winners = winners + " " + playerID;
+					winnerCounter++;
+				}else if(tmpScore[i]==100){
+					winners =winners + ", " + playerID;
+					winnerCounter++;
 				}
 			}
 			
-			if(counter == 1)
+			if(winnerCounter == 1)
 				winners = winners + " wins!";
 			else
 				winners = winners + " win!";
 
 			winningPlayerID.setText(winners);
+			winningPlayerID.setTypeface(scoreFont);
+			
 			restartButton.setOnClickListener(new View.OnClickListener() {	
 				@Override
 				public void onClick(View v) {
@@ -105,6 +169,13 @@ public class TournamentMode extends Activity{
 				}
 			});
 			alertDialog.show();
+			
+			//setting height and width params
+			WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+			layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+			layoutParams.width = 600;
+			layoutParams.height = 500;
+			alertDialog.getWindow().setAttributes(layoutParams);
 		}	
 		
 	@Override
@@ -115,7 +186,6 @@ public class TournamentMode extends Activity{
 		
 		//sound state of the background music
 		mp = MediaPlayer.create(TournamentMode.this, R.raw.modemusic);
-		mp.setLooping(true);
 		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
 		soundOn = musicPref.getBoolean("sound", false); //0 is the default value
 		if(soundOn)
@@ -141,6 +211,7 @@ public class TournamentMode extends Activity{
 		
 		//Adding RioGrande font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
+		sentenceFont = Typeface.createFromAsset(getAssets(), "fonts/NASHVILL.TTF");
 		user1score.setTypeface(scoreFont);
 		user2score.setTypeface(scoreFont);
 		user3score.setTypeface(scoreFont);
@@ -165,7 +236,6 @@ public class TournamentMode extends Activity{
 					user1score.setText(String.valueOf(tmpScore[0]));
 					flagUser1 = false;
 				}else{
-					tmpScore[0]-=10;
 					user1score.setText(String.valueOf(tmpScore[0]));
 				}				
 				
@@ -175,7 +245,6 @@ public class TournamentMode extends Activity{
 					user2score.setText(String.valueOf(tmpScore[1]));
 					flagUser2 = false;
 				}else{
-					tmpScore[1]-=10;
 					user2score.setText(String.valueOf(tmpScore[1]));
 				}
 				
@@ -185,25 +254,47 @@ public class TournamentMode extends Activity{
 					user3score.setText(String.valueOf(tmpScore[2]));
 					flagUser3 = false;
 				}else{
-					tmpScore[2]-=10;
 					user3score.setText(String.valueOf(tmpScore[2]));
 				}
 				
 				//Editing the values after each result for user2
 				if(flagUser4 == true){
-					tmpScore[3]-=10;
+					tmpScore[3]+=10;
 					user4score.setText(String.valueOf(tmpScore[3]));
 					flagUser4 = false;
 				}else{
-					tmpScore[3]+=10;
 					user4score.setText(String.valueOf(tmpScore[3]));
 				}
 				
 				imageQuestions.setImageResource(imageArray[i].getImageID());
-				user1ResponseImageButton.setEnabled(true);
-				user2ResponseImageButton.setEnabled(true);
-				user3ResponseImageButton.setEnabled(true);
-				user4ResponseImageButton.setEnabled(true);
+				
+				if(toNextRound[0])
+					user1ResponseImageButton.setEnabled(true);
+				else{
+					user1ResponseImageButton.setEnabled(false);
+					user1ResponseImageButton.setVisibility(View.GONE);
+				}
+				
+				if(toNextRound[1])
+					user2ResponseImageButton.setEnabled(true);
+				else{
+					user2ResponseImageButton.setEnabled(false);
+					user2ResponseImageButton.setVisibility(View.GONE);
+				}
+				
+				if(toNextRound[2])
+					user3ResponseImageButton.setEnabled(true);
+				else{
+					user3ResponseImageButton.setEnabled(false);
+					user3ResponseImageButton.setVisibility(View.GONE);
+				}
+				
+				if(toNextRound[3])
+					user4ResponseImageButton.setEnabled(true);
+				else{
+					user4ResponseImageButton.setEnabled(false);
+					user4ResponseImageButton.setVisibility(View.GONE);
+				}
 				
 				OnTouchListener onTouchListener = new OnTouchListener() {					
 					@Override
@@ -298,26 +389,45 @@ public class TournamentMode extends Activity{
 				
 				//adding delay between each handler event i.e., the changing of the images
 				
-				if (tmpScore[0]==100 || tmpScore[1]==100 || tmpScore[2]==100 || tmpScore[3]==100)
-				{imageQuestions.setImageResource(R.drawable.game_over);
-				onPause();}
-				else
-				{	handler.postDelayed(this,1000);
+				int playersNextRound = 0;
+				if (tmpScore[0]==100 || tmpScore[1]==100 || tmpScore[2]==100 || tmpScore[3]==100){
+					for(int i=0; i<4; i++){
+						if(tmpScore[i]==100)
+							playersNextRound++;
+						else
+							toNextRound[i]=false;							
+					}
+					
+					if(playersNextRound==1){
+						imageQuestions.setImageResource(R.drawable.game_over);
+						onPause();
+					}else{
+						for(int i=0; i<4; i++){
+							tmpScore[i]=0;
+						}
+						imageQuestions.setImageResource(R.drawable.image_next_round);
+						try{Thread.sleep(1000);}catch(InterruptedException e){/*do nothing*/};
+						handler.postDelayed(this, delayBetweenImages-150);
+						i = randomIndex(i, j);
+					}
+				}else{
+					handler.postDelayed(this,1000);
 				//Sequential generator of images...
 				//i++;
 				//if(i>imageArray.length-1)
 				//	i=0;
 
 				//Random generator of images...
-				i=randomIndex(i,j);
+					i=randomIndex(i,j);
 				}
 			}
 		};
 		handler.postDelayed(runnable, 1500);
 	}
+	
 	protected void onPause() {
-		// TODO Auto-generated method stub
-		if(soundOn)mp.stop();
+		if(soundOn)
+			mp.stop();
 		handler.removeCallbacks(runnable);
 		onCreateDialog();
 		super.onPause();

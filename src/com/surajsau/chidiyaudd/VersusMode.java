@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,10 +30,10 @@ public class VersusMode extends Activity{
 	ImageButton user1responseButton, user2responseButton, restartButton, mainMenuButton;
 	TextView user1Score, user2Score,  winningPlayerID;
 	int tmpScore1=0, tmpScore2=0;
-	MediaPlayer mp;
 	ImageView imageQuestions;
-	Typeface scoreFont;
+	Typeface scoreFont, sentenceFont;
 	Runnable runnable;
+	MediaPlayer mp;
 	Handler handler;
 	boolean soundOn;
 	
@@ -57,14 +58,14 @@ public class VersusMode extends Activity{
 	    public void onCreateDialog() {
 		        // Use the Builder class for convenient dialog construction
 			// Use the Builder class for convenient dialog construction
-			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_layout_versus_mode, null);
+			final View dialogView = getLayoutInflater().inflate(R.layout.dialog_end_versus_mode, null);
 			Dialog alertDialog = new Dialog(VersusMode.this);
 			alertDialog.setContentView(dialogView);
 			alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 	
 			winningPlayerID = (TextView)dialogView.findViewById(R.id.score);
-			restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_single);
-			mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_single);
+			restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_versus);
+			mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_versus);
 			restartButton.setBackground(null);
 			mainMenuButton.setBackground(null);
 			
@@ -74,8 +75,10 @@ public class VersusMode extends Activity{
 			}else if(tmpScore1 < tmpScore2){
 				winningPlayerID.setText("Player 2 wins!");
 			}else{
-				winningPlayerID.setText("Great Champs! It's a tie!");
+				winningPlayerID.setText("It's a tie!");
 			}
+			
+			winningPlayerID.setTypeface(scoreFont);
 			
 			restartButton.setOnClickListener(new View.OnClickListener() {
 				
@@ -99,6 +102,13 @@ public class VersusMode extends Activity{
 				}
 			});
 			alertDialog.show();
+			
+			//setting height and width params
+			WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+			layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+			layoutParams.width = 600;
+			layoutParams.height = 500;
+			alertDialog.getWindow().setAttributes(layoutParams);
 	    }
 	
 	
@@ -127,6 +137,7 @@ public class VersusMode extends Activity{
 		
 		//Adding RioGrande font to score...
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
+		sentenceFont = Typeface.createFromAsset(getAssets(), "fonts/NASHVILL.TTF");
 		user1Score.setTypeface(scoreFont);
 		user2Score.setTypeface(scoreFont);
 		
@@ -274,14 +285,13 @@ public class VersusMode extends Activity{
 		}while(i==j);
 		return i;
 	}
+	
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		if(soundOn)
 			mp.stop();
 		handler.removeCallbacks(runnable);
-		onCreateDialog();
-		
-		
+		onCreateDialog();		
 		super.onPause();
 	}
 }

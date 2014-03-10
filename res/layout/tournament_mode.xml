@@ -20,6 +20,14 @@
 		        android:layout_width="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/player_1_versus"
+            android:text="Player 1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/user1_touch_button_tournament_mode"
+            android:textColor="#000"
+            android:layout_centerHorizontal="true"/>
         
         <ImageButton 
 		        android:id="@+id/user2_touch_button_tournament_mode"
@@ -28,6 +36,14 @@
 		        android:layout_width="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_alignParentBottom="true"/>    
+		<TextView
+            android:id="@+id/player_2_versus"
+            android:text="Player 2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_above="@id/user2_touch_button_tournament_mode"
+            android:textColor="#000"
+            android:layout_centerHorizontal="true"/>
 	    
     </RelativeLayout>
     
@@ -106,6 +122,14 @@
 		        android:layout_width="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_alignParentTop="true"/>
+	    <TextView
+            android:id="@+id/player_4_versus"
+            android:text="Player 4"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/user4_touch_button_tournament_mode"
+            android:textColor="#000"
+            android:layout_centerHorizontal="true"/>
 	    
 	    <ImageButton 
 		        android:id="@+id/user3_touch_button_tournament_mode"
@@ -114,6 +138,13 @@
 		        android:layout_width="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_alignParentBottom="true"/>
-	    
+	    <TextView
+            android:id="@+id/player_3_versus"
+            android:text="Player 3"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_above="@id/user3_touch_button_tournament_mode"
+            android:textColor="#000"
+            android:layout_centerHorizontal="true"/>
 	</RelativeLayout>
 </LinearLayout>

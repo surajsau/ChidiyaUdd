@@ -31,14 +31,21 @@ public class LaunchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launch);
 		
-		//sound state of the background music
+		//sound state of the background music		
 		mp = MediaPlayer.create(LaunchActivity.this, R.raw.launchmusic);
 		mp.setLooping(true);
 		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
 		soundOn = musicPref.getBoolean("sound", false); //0 is the default value
 		if(soundOn)
 			mp.start();
-				
+		
+		SharedPreferences highScoreStatus = this.getSharedPreferences("highScoreKey",0);
+		SharedPreferences statusOfRun = this.getSharedPreferences("appFirstTimeRun",0);
+		if(statusOfRun.getBoolean("firstTime", true)){
+			statusOfRun.edit().putBoolean("firstTime", false).commit();
+			highScoreStatus.edit().putInt("high_score_key", 0);
+		}
+		
 		singleMode = (ImageButton)findViewById(R.id.image_single_mode);
 		versusMode = (ImageButton)findViewById(R.id.image_versus_mode);
 		tournamentMode = (ImageButton)findViewById(R.id.image_tournament_mode);
@@ -98,13 +105,35 @@ public class LaunchActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				mp.stop();
+				//mp.stop();
 				Intent i = new Intent(LaunchActivity.this, SettingsMode.class);
 				startActivity(i);
 			}
 		});
 	}
 	
+	
+	//stop music on destroying the app
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if(mp!=null && mp.isPlaying()){
+			mp.stop();
+			mp.release();
+			mp = null;
+		}
+	}
+	
+	//stop music when the app is running in background
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		if(mp!=null && mp.isPlaying()){
+			mp.stop();
+		}
+	}
 }
 
 	
