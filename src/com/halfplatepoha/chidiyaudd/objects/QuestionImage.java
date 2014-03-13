@@ -1,6 +1,6 @@
-package com.surajsau.chidiyaudd.objects;
+package com.halfplatepoha.chidiyaudd.objects;
 
-public class QuestionImage {
+public class QuestionImage{
 	private boolean canFly;
 	private int imageID;
 	
@@ -26,4 +26,5 @@ public class QuestionImage {
 	public void setCanFly(boolean canFly){
 		this.canFly = canFly;
 	}
+	
 }

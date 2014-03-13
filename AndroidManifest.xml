@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.surajsau.chidiyaudd"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.halfplatepoha.chidiyaudd"
+    android:versionCode="2"
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         <activity
-            android:name="com.surajsau.chidiyaudd.SplashScreen"
+            android:name="com.halfplatepoha.chidiyaudd.SplashScreen"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
@@ -26,18 +26,18 @@
         </activity>
         
         <activity
-            android:name="com.surajsau.chidiyaudd.LaunchActivity"
+            android:name="com.halfplatepoha.chidiyaudd.LaunchActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask">
             <meta-data
             	android:name="android.support.PARENT_ACTIVITY"
-            	android:value="com.surajsau.chidiyaudd.SplashScreen" />
+            	android:value="com.halfplatepoha.chidiyaudd.SplashScreen" />
         </activity>
         
         <activity
-            android:name="com.surajsau.chidiyaudd.SingleMode"
+            android:name="com.halfplatepoha.chidiyaudd.SingleMode"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation"
@@ -48,36 +48,36 @@
         </activity>
         
         <activity
-            android:name="com.surajsau.chidiyaudd.VersusMode"
+            android:name="com.halfplatepoha.chidiyaudd.VersusMode"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask">
             <meta-data
             	android:name="android.support.PARENT_ACTIVITY"
-            	android:value="com.surajsau.chidiyaudd.LaunchActivity" />
+            	android:value="com.halfplatepoha.chidiyaudd.LaunchActivity" />
         </activity>
         
         <activity
-            android:name="com.surajsau.chidiyaudd.TournamentMode"
+            android:name="com.halfplatepoha.chidiyaudd.TournamentMode"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask">
             <meta-data
             	android:name="android.support.PARENT_ACTIVITY"
-            	android:value="com.surajsau.chidiyaudd.LaunchActivity" />
+            	android:value="com.halfplatepoha.chidiyaudd.LaunchActivity" />
         </activity>
         
         <activity
-            android:name="com.surajsau.chidiyaudd.SettingsMode"
+            android:name="com.halfplatepoha.chidiyaudd.SettingsMode"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask">
             <meta-data
             	android:name="android.support.PARENT_ACTIVITY"
-            	android:value="com.surajsau.chidiyaudd.LaunchActivity" />
+            	android:value="com.halfplatepoha.chidiyaudd.LaunchActivity" />
         </activity>
     </application>
 

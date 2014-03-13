@@ -1,4 +1,4 @@
-package com.surajsau.chidiyaudd;
+package com.halfplatepoha.chidiyaudd;
 
 import android.app.Activity;
 import android.content.Intent;

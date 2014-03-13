@@ -1,4 +1,4 @@
-package com.surajsau.chidiyaudd;
+package com.halfplatepoha.chidiyaudd;
 
 import java.util.Random;
 
@@ -6,14 +6,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -23,7 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.surajsau.chidiyaudd.objects.QuestionImage;
+import com.halfplatepoha.chidiyaudd.objects.QuestionImage;
 
 public class SingleMode extends Activity{
 
@@ -41,20 +43,46 @@ public class SingleMode extends Activity{
 	boolean soundOn;
 
 	//Question Images List...
-	QuestionImage img1= new QuestionImage(R.drawable.image01, false);
-	QuestionImage img2= new QuestionImage(R.drawable.image02, false);
-	QuestionImage img3= new QuestionImage(R.drawable.image03, false);
-	QuestionImage img4= new QuestionImage(R.drawable.image04, true);
-	//QuestionImage img5= new QuestionImage(R.drawable.image05, true);
-	QuestionImage img6= new QuestionImage(R.drawable.image06, true);
-	QuestionImage img7= new QuestionImage(R.drawable.image07, false);
-	QuestionImage img8= new QuestionImage(R.drawable.image08, true);
-	QuestionImage img9= new QuestionImage(R.drawable.image09, true);
-	QuestionImage img10= new QuestionImage(R.drawable.image10, false);
-	QuestionImage img11= new QuestionImage(R.drawable.image11, true);
-	QuestionImage img12= new QuestionImage(R.drawable.image12, false);
-	QuestionImage[] imageArray = {img1, img2, img3, img4, img6, img7, img8, img9, img10, img11, img12};
+			QuestionImage img1= new QuestionImage(R.drawable.image01, false);
+			QuestionImage img2= new QuestionImage(R.drawable.image02, false);
+			QuestionImage img3= new QuestionImage(R.drawable.image03, false);
+			QuestionImage img4= new QuestionImage(R.drawable.image04, true);
+			QuestionImage img5= new QuestionImage(R.drawable.image05, true);
+			QuestionImage img6= new QuestionImage(R.drawable.image06, true);
+			QuestionImage img7= new QuestionImage(R.drawable.image07, false);
+			QuestionImage img8= new QuestionImage(R.drawable.image08, true);
+			QuestionImage img9= new QuestionImage(R.drawable.image09, true);
+			QuestionImage img10= new QuestionImage(R.drawable.image10, false);
+			QuestionImage img11= new QuestionImage(R.drawable.image11, true);
+			QuestionImage img12= new QuestionImage(R.drawable.image12, false);
+			QuestionImage img13= new QuestionImage(R.drawable.image13, false);
+			QuestionImage img14= new QuestionImage(R.drawable.image14, true);
+			QuestionImage img15= new QuestionImage(R.drawable.image15, false);
+			QuestionImage img16= new QuestionImage(R.drawable.image16, true);
+			QuestionImage img17= new QuestionImage(R.drawable.image17, false);
+			QuestionImage img18= new QuestionImage(R.drawable.image18, false);
+			QuestionImage img19= new QuestionImage(R.drawable.image19, false);
+			QuestionImage img20= new QuestionImage(R.drawable.image20, true);
+			QuestionImage img21= new QuestionImage(R.drawable.image21, false);
+			QuestionImage img22= new QuestionImage(R.drawable.image22, false);
+			QuestionImage img23= new QuestionImage(R.drawable.image23, false);
+			QuestionImage img24= new QuestionImage(R.drawable.image24, false);
+			QuestionImage img25= new QuestionImage(R.drawable.image25, false);
+			QuestionImage img26= new QuestionImage(R.drawable.image26, true);
+			QuestionImage img27= new QuestionImage(R.drawable.image27, true);
+			QuestionImage img28= new QuestionImage(R.drawable.image28, true);
+			QuestionImage img29= new QuestionImage(R.drawable.image29, true);
+			QuestionImage img30= new QuestionImage(R.drawable.image30, true);
+			QuestionImage[] imageArray = {img1, img2, img3, img4, img5, img15, img25, img6, img7, img8, img9, img10, 
+					img11, img12, img13, img14, img16, img17, img18, img19, img20,
+					img21, img22, img23, img24, img26, img27, img28, img29, img30};
 
+			//get dpi of screen
+			private final float getDPI(){
+				final DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+				return metrics.density;
+			}
+			
 	public void onCreateDialog() {	
 	    // Defining view of the dialog from which layout is to be seen
 		final View dialogView = getLayoutInflater().inflate(R.layout.dialog_end_single_mode, null);
@@ -70,8 +98,25 @@ public class SingleMode extends Activity{
 		restartButton = (ImageButton)dialogView.findViewById(R.id.replay_button_single);
 		mainMenuButton = (ImageButton)dialogView.findViewById(R.id.main_menu_button_single);
 
-		restartButton.setBackground(null);
-		mainMenuButton.setBackground(null);
+		/*restartButton.setBackground(null);
+		mainMenuButton.setBackground(null);*/
+		
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    restartButton.setBackground(null);
+		} else {
+
+		    restartButton.setBackgroundDrawable(null);
+		}
+		
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    mainMenuButton.setBackground(null);
+
+		} else {
+
+		    mainMenuButton.setBackgroundDrawable(null);
+		}
 
 		highScore.setTypeface(scoreFont);
 		highScoreSentence.setTypeface(sentenceFont);
@@ -79,7 +124,7 @@ public class SingleMode extends Activity{
 
 		//Setting the text content of the DialogBox
 		if (tmpScore == high_score) {
-			score.setText("New High Score "+String.valueOf(tmpScore));
+			score.setText("High Score! "+String.valueOf(tmpScore));
 			highScore.setText(String.valueOf(high_score));
 			highScore.setVisibility(View.GONE);
 			highScoreText.setVisibility(View.GONE);
@@ -111,16 +156,66 @@ public class SingleMode extends Activity{
 		});
 		alertDialog.show();
 
+		float dpi = getDPI();
+		
 		//setting height and width params
 		WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
 		layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
 		if(tmpScore==high_score){
-			layoutParams.width = 750; //optimum values
-			layoutParams.height = 600;
+			switch ((int)dpi) {
+    		case 0:
+				layoutParams.height = 350;
+				layoutParams.width = 400;
+				break;
+
+			case 1:
+				layoutParams.height = 375;
+				layoutParams.width = 550;
+				break;
+				
+			case 2:
+				layoutParams.height = 475;
+				layoutParams.width = 615;
+				break;
+				
+			case 3:
+				layoutParams.height = 700;
+				layoutParams.width = 900;
+				break;
+				
+			case 4:
+				layoutParams.height = 850;
+				layoutParams.width = 800;
+				break;
+			}
 		}
 		else{
-			layoutParams.height = 600;
-			layoutParams.width = 500;
+			switch ((int)dpi) {
+    		case 0:
+				layoutParams.height = 350;
+				layoutParams.width = 400;
+				break;
+
+			case 1:
+				layoutParams.height = 400;
+				layoutParams.width = 450;
+				break;
+				
+			case 2:
+				layoutParams.height = 500;
+				layoutParams.width = 600;
+				break;
+				
+			case 3:
+				layoutParams.height = 800;
+				layoutParams.width = 900;
+				break;
+				
+			case 4:
+				layoutParams.height = 850;
+				layoutParams.width = 800;
+				break;
+			}
 		}
 		alertDialog.getWindow().setAttributes(layoutParams);
     }
@@ -133,8 +228,9 @@ public class SingleMode extends Activity{
 
 		//sound state of the background music	
 		mp = MediaPlayer.create(SingleMode.this, R.raw.modemusic);
+		mp.setLooping(true);
 		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
-		soundOn = musicPref.getBoolean("sound", false); //'off' is the default value
+		soundOn = musicPref.getBoolean("sound", true); //'off' is the default value
 		if(soundOn) 
 			mp.start();
 
@@ -149,7 +245,14 @@ public class SingleMode extends Activity{
 		scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
 		userScore.setTypeface(scoreFont);
 
-		userResponseButton.setBackground(null);		
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    userResponseButton.setBackground(null);
+		} else {
+
+		    userResponseButton.setBackgroundDrawable(null);
+		}
+		//userResponseButton.setBackground(null);		
 
 		//Image Changing part  & decision part for imageQuestions ImageView//
 		//final Handler handler = new Handler();
@@ -302,7 +405,7 @@ public class SingleMode extends Activity{
 		//Random generator of images...
 		Random r = new Random();
 		do{
-			i = r.nextInt(11);
+			i = r.nextInt(30);
 		}while(i==j);
 		return i;
 	}

@@ -1,4 +1,4 @@
-package com.surajsau.chidiyaudd;
+package com.halfplatepoha.chidiyaudd;
  
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -6,12 +6,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
  
@@ -22,8 +26,14 @@ public class SettingsMode extends Activity{
         int high_score_settings;
         Typeface scoreFont, sentenceFont;    
         boolean soundOn;
+        MediaPlayer mp;
        
-        //0 is the default value
+        private final float getDPI(){
+    		final DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+    		return metrics.density;
+    	}
+        
+      //0 is the default value
         public void onCreateRulesDialog(){        	
         	final View dialogView = getLayoutInflater().inflate(R.layout.dialog_rules, null);
         	Dialog rulesDialog = new Dialog(SettingsMode.this);
@@ -35,12 +45,37 @@ public class SettingsMode extends Activity{
         	
         	rulesHeader.setTypeface(scoreFont);
         	rulesDialog.show();
-    		
+        	
+        	float dpi = getDPI();
     		//setting height and width params
     		WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
     		layoutParams.copyFrom(rulesDialog.getWindow().getAttributes());
-    		layoutParams.width = 700; //optimum values
-    		layoutParams.height = 650;
+    		switch ((int)dpi) {
+    		case 0:
+				layoutParams.height = 350;
+				layoutParams.width = 400;
+				break;
+
+			case 1:
+				layoutParams.height = 450;
+				layoutParams.width = 550;
+				break;
+				
+			case 2:
+				layoutParams.height = 650;
+				layoutParams.width = 700;
+				break;
+				
+			case 3:
+				layoutParams.height = 800;
+				layoutParams.width = 900;
+				break;
+				
+			case 4:
+				layoutParams.height = 850;
+				layoutParams.width = 800;
+				break;
+			}
     		
     		rulesDialog.getWindow().setAttributes(layoutParams);
         }
@@ -57,11 +92,37 @@ public class SettingsMode extends Activity{
         	aboutHeader.setTypeface(scoreFont);
         	aboutDialog.show();
     		
+        	int dpi = (int)getDPI();
+        	
     		//setting height and width params
     		WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
     		layoutParams.copyFrom(aboutDialog.getWindow().getAttributes());
-    		layoutParams.width = 700; //optimum values
-    		layoutParams.height = 500;
+    		switch ((int)dpi) {
+    		case 0:
+				layoutParams.height = 300;
+				layoutParams.width = 450;
+				break;
+
+			case 1:
+				layoutParams.height = 400;
+				layoutParams.width = 600;
+				break;
+				
+			case 2:
+				layoutParams.height = 500;
+				layoutParams.width = 700;
+				break;
+				
+			case 3:
+				layoutParams.height = 750;
+				layoutParams.width = 950;
+				break;
+				
+			case 4:
+				layoutParams.height = 850;
+				layoutParams.width = 800;
+				break;
+			}
     		
     		aboutDialog.getWindow().setAttributes(layoutParams);
         }
@@ -72,9 +133,43 @@ public class SettingsMode extends Activity{
                 infoButton = (ImageButton)findViewById(R.id.info_button);
                 rulesButton = (ImageButton)findViewById(R.id.rules_button);
                 musicToggleButton = (ImageButton)findViewById(R.id.music_button);
-                musicToggleButton.setBackground(null);
+                /*musicToggleButton.setBackground(null);
                 rulesButton.setBackground(null);
-                infoButton.setBackground(null);
+                infoButton.setBackground(null);*/
+                
+                if (Build.VERSION.SDK_INT >= 16) {
+
+        		    musicToggleButton.setBackground(null);
+
+        		} else {
+
+        		    musicToggleButton.setBackgroundDrawable(null);
+        		}
+        		
+        		if (Build.VERSION.SDK_INT >= 16) {
+
+        		    rulesButton.setBackground(null);
+
+        		} else {
+
+        		    rulesButton.setBackgroundDrawable(null);
+        		}
+        		
+        		if (Build.VERSION.SDK_INT >= 16) {
+
+        		    infoButton.setBackground(null);
+
+        		} else {
+
+        		    infoButton.setBackgroundDrawable(null);
+        		}
+                
+                //mp = MediaPlayer.create(SettingsMode.this, R.raw.launchmusic);
+        		//mp.setLooping(true);
+        		//SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
+        		//soundOn = musicPref.getBoolean("sound",true); //0 is the default value
+        		//if(soundOn && mp.isPlaying()!=true)
+        			//mp.start();
                 
                 sentenceFont  =Typeface.createFromAsset(getAssets(), "fonts/NASHVILL.TTF");
                 scoreFont = Typeface.createFromAsset(getAssets(), "fonts/RioGrande.ttf");
@@ -100,13 +195,15 @@ public class SettingsMode extends Activity{
                 SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
                 final Editor editor = musicPref.edit();
                 soundOn = musicPref.getBoolean("sound", true);
-                if(soundOn){
+                if(MusicService.isPlaying){
                     musicToggleButton.setImageResource(R.drawable.music_on_image);
+                    MusicService.isContinuePlaying = false;
                     //startService(new Intent(this, LaunchMusicService.class));
                 }
                 else{
                     musicToggleButton.setImageResource(R.drawable.music_off_image);
                     //stopService(new Intent(this, LaunchMusicService.class));
+                    MusicService.isContinuePlaying = false;
                 } 
                
                 OnClickListener onClickListener = new OnClickListener() {
@@ -114,17 +211,26 @@ public class SettingsMode extends Activity{
                         @Override
                         public void onClick(View v) {
                                 // TODO Auto-generated method stub
-                                if(soundOn){
+                                if(MusicService.isPlaying){
                                         musicToggleButton.setImageResource(R.drawable.music_off_image);
                                         soundOn = false;
                                         editor.putBoolean("sound",soundOn);
                                         editor.commit();
+                                        if(MusicService.mp!=null){
+                                        	MusicService.mp.stop();
+                                        	//MusicService.mp = null;
+                                        }
+                                        MusicService.isPlaying = false;
+                                        MusicService.isContinuePlaying = false;
                                         //stopService(new Intent(getApplicationContext(), LaunchMusicService.class));
                                 }else{
                                         musicToggleButton.setImageResource(R.drawable.music_on_image);
                                         soundOn = true;
                                         editor.putBoolean("sound",soundOn);
                                         editor.commit();
+                                        MusicService.musicPLayer(getApplicationContext(), R.raw.launchmusic);
+                                        MusicService.isPlaying = true;
+                                        MusicService.isContinuePlaying = true;
                                         //startService(new Intent(getApplicationContext(), LaunchMusicService.class));
                                 }
                         }
@@ -156,9 +262,10 @@ public class SettingsMode extends Activity{
 				});
         }
         
-        @Override
+        /*@Override
         protected void onPause() {
         // TODO Auto-generated method stub
+        	if (mp.isPlaying()) mp.stop();
         	super.onPause();
-        }
+        }*/
 }

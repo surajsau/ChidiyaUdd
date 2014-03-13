@@ -1,4 +1,4 @@
-package com.surajsau.chidiyaudd;
+package com.halfplatepoha.chidiyaudd;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,9 +34,13 @@ public class LaunchActivity extends Activity {
 		mp = MediaPlayer.create(LaunchActivity.this, R.raw.launchmusic);
 		mp.setLooping(true);
 		SharedPreferences musicPref = this.getSharedPreferences("myPrefKey", Context.MODE_PRIVATE);
-		soundOn = musicPref.getBoolean("sound",true); //0 is the default value
-		if(soundOn)
-			mp.start();
+		MusicService.isPlaying = soundOn = musicPref.getBoolean("sound",true); //0 is the default value
+		
+		if(MusicService.isPlaying){
+			//mp.start();
+			MusicService.musicPLayer(getApplicationContext(), R.raw.launchmusic);
+			MusicService.isPlaying = true;
+		}
 
 		SharedPreferences highScoreStatus = this.getSharedPreferences("highScoreKey",0);
 		SharedPreferences statusOfRun = this.getSharedPreferences("appFirstTimeRun",0);
@@ -53,7 +56,40 @@ public class LaunchActivity extends Activity {
 
 
 		//Nulling the background gradient from image view
-		singleMode.setBackground(null);
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    singleMode.setBackground(null);
+
+		} else {
+
+		    singleMode.setBackgroundDrawable(null);
+		}
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    versusMode.setBackground(null);
+
+		} else {
+
+		    versusMode.setBackgroundDrawable(null);
+		}
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    tournamentMode.setBackground(null);
+
+		} else {
+
+		    tournamentMode.setBackgroundDrawable(null);
+		}
+		if (Build.VERSION.SDK_INT >= 16) {
+
+		    settingsMode.setBackground(null);
+
+		} else {
+
+		    settingsMode.setBackgroundDrawable(null);
+		}
+		
+		/*singleMode.setBackground(null);
 		versusMode.setBackground(null);
 		tournamentMode.setBackground(null);
 		settingsMode.setBackground(null);
@@ -73,7 +109,9 @@ public class LaunchActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				mp.stop();
+				//mp.stop();
+				if(MusicService.isPlaying && MusicService.mp!=null)
+					MusicService.mp.stop();
 				Intent i = new Intent(LaunchActivity.this, SingleMode.class);
 				startActivity(i);
 			}
@@ -83,7 +121,9 @@ public class LaunchActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				mp.stop();
+				//mp.stop();
+				if(MusicService.isPlaying & MusicService.mp!=null)
+					MusicService.mp.stop();
 				Intent i = new Intent(LaunchActivity.this, VersusMode.class);
 				startActivity(i);
 			}
@@ -94,7 +134,9 @@ public class LaunchActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				mp.stop();
+				//mp.stop();
+				if(MusicService.isPlaying & MusicService.mp!=null)
+					MusicService.mp.stop();
 				Intent i = new Intent(LaunchActivity.this, TournamentMode.class);
 				startActivity(i);
 			}
@@ -105,33 +147,44 @@ public class LaunchActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				//mp.stop();
+				if(MusicService.mp!=null)
+					MusicService.mp.stop();
 				Intent i = new Intent(LaunchActivity.this, SettingsMode.class);
 				startActivity(i);
 			}
 		});
 	}
 
-
-	//stop music on destroying the app
 	@Override
-	protected void onDestroy() {
+	protected void onResume() {
 		// TODO Auto-generated method stub
-		super.onDestroy();
-		if(mp!=null && mp.isPlaying()){
-			mp.stop();
-			mp.release();
-			mp = null;
+		super.onResume();
+		//this is for the case when we come back from settings to mllaunchactivity
+		if(!MusicService.isContinuePlaying && MusicService.mp == null && MusicService.isPlaying){
+			MusicService.musicPLayer(getApplicationContext(), R.raw.launchmusic);
 		}
 	}
-
-	//stop music when the app is running in background
+	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		if(mp!=null && mp.isPlaying()){
-			mp.stop();
+		if(MusicService.mp!=null && MusicService.isPlaying){
+			MusicService.mp.stop();
+			MusicService.mp = null;
+			//MusicService.mp.release();
 		}
 	}
+	
+	//stop music on destroying the app
+		/*@Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+			super.onDestroy();
+			if(MusicService.mp!=null && MusicService.isPlaying){
+				MusicService.mp.stop();
+				MusicService.mp.release();
+				MusicService.mp = null;
+			}
+		}*/
 }

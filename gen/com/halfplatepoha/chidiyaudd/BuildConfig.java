@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package com.surajsau.chidiyaudd;
+package com.halfplatepoha.chidiyaudd;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;
